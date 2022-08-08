@@ -1,6 +1,6 @@
 # Criar um sistema para gestão Escolar
 
-## Criar POJO/DAO
+## Criar POJO [ok]/DAO[?]
 
 - Empresa [ok]
 - unidades escolares [ok]
