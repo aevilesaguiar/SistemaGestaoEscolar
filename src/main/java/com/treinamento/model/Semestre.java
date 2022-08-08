@@ -1,11 +1,12 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "periodo_curso")
-public class PeriodoCurso {
+public class Semestre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +16,10 @@ public class PeriodoCurso {
     private String periodo;
 
 
-    public PeriodoCurso() {
+    @ManyToMany(mappedBy = "disciplinas")
+    private List<Curso> cursos;
+
+    public Semestre() {
     }
 
     public Long getId() {
@@ -38,7 +42,7 @@ public class PeriodoCurso {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PeriodoCurso that = (PeriodoCurso) o;
+        Semestre that = (Semestre) o;
         return Objects.equals(id, that.id);
     }
 

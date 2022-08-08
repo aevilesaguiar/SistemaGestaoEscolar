@@ -1,6 +1,7 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +18,15 @@ public class Curso {
 
     @Column(name = "hora_aula", nullable = false)
     private String horas;
+
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "semestre_curso")
+    private List<Semestre> semestres;
+
+    @OneToMany(mappedBy = "cursos", cascade = CascadeType.ALL)//se eu não colocar essa anotação ele não será bidirecional,
+    private List<Disciplina> disciplinas;
 
 
     public Curso() {

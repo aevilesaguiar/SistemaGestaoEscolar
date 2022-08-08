@@ -1,6 +1,7 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +27,19 @@ public class UnidadeEscolar {
 
     @Column(name = "email_empresa", length = 80)
     private String email;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "empresa_unidade_escolar")
+    private Empresa empresa;
+
+    @ManyToMany(mappedBy = "unidadesEscolares")
+    private List<Aluno> alunos;
+
+    @ManyToMany(mappedBy = "unidEscolares")
+    private List<Professor> professores;
+
+
+
 
 
     public UnidadeEscolar() {

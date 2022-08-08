@@ -1,6 +1,7 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -44,6 +45,13 @@ public class Professor {
 
     @Column(name = "email_professor")
     private  String email;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "professor_unidade_escolar")
+    private List<UnidadeEscolar> unidEscolares;
+
+
+
 
     public Professor() {
     }

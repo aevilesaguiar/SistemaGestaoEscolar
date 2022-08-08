@@ -2,6 +2,7 @@ package com.treinamento.model;
 
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +18,12 @@ public class Disciplina {
 
     @Column(name = "qtde_horas_disciplina")
     private String horasAula;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "disciplina_curso")
+    List<Curso> cursos;
+
+
 
     public Disciplina() {
     }
@@ -44,6 +51,8 @@ public class Disciplina {
     public void setHorasAula(String horasAula) {
         this.horasAula = horasAula;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

@@ -6,16 +6,19 @@ import javax.persistence.Persistence;
 
 public class JPAUtil {
 
-    /*criando um objeto do tipo Entity manger Factory que cria uma fabrica de conexão com o banco*/
-    private  EntityManagerFactory entityManagerFactory;
-
-    //sempre que precisar da entitymanager chamaremos o método abaixo, isso garante que ele não seja criado mais de uma vez
-    public EntityManager getEntityManager() {
-        return entityManagerFactory.createEntityManager();
+    /**
+     * Método utilizado para obter o entity manager.
+     * @return
+     */
+    private static EntityManagerFactory factory;
+    static {
+        factory = Persistence.createEntityManagerFactory("sistema");
     }
-
-    public JPAUtil(){
-        entityManagerFactory= Persistence.createEntityManagerFactory("sistema");//É COMO SE FOSSE UMA CONEXÃO COM O BANCO
+    public static EntityManager getEntityManager() {
+        return factory.createEntityManager();
+    }
+    public static void close() {
+        factory.close();
     }
 
 }

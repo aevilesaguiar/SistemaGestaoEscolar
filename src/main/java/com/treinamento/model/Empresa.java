@@ -1,6 +1,7 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,10 +16,10 @@ public class Empresa {
     @Column(name = "nome_empresa",length = 120)
     private String nome;
 
-    @Column(name = "cnpj", length = 19)
+    @Column(name = "cnpj", length = 20)
     private String cnpj;
 
-    @Column(name = "telefone_empresa", length = 11)
+    @Column(name = "telefone_empresa", length = 20)
     private String telefone;
 
     @Column(name = "email_empresa", length = 80)
@@ -29,6 +30,11 @@ public class Empresa {
 
     @Column(name = "endereço_empresa" , length = 160)
     private String endereco;
+
+    // lado forte do relacionamento
+   // chave estrangeira fica do outro lado
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)//se eu não colocar essa anotação ele não será bidirecional,
+    private List<UnidadeEscolar> unidadesEscolares;
 
 
     public Empresa() {

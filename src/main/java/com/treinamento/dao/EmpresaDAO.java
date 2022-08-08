@@ -1,37 +1,123 @@
 package com.treinamento.dao;
 
-import com.treinamento.model.Cliente;
+
+import com.treinamento.model.Empresa;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
 
-public class EmpresaDAO extends JPAUtil{
-    /*instancio uma EntityManger que vou ter a possibilidade de manipular uma entidade */
-    public void salvar (Cliente cliente){//ele recebe um objeto POJO
 
-        //toda vez tem que iniciar a transação
-        EntityManager entityManager=getEntityManager();//getEntityManager() é um metodo da classe DAO que retorna uma instancia do banco
+public class EmpresaDAO {
 
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(cliente);//persistir o objeto no banco
-            entityManager.getTransaction().commit();//tenho que commitar senão ele não envia para o banco
-        }catch (Exception e){
-            entityManager.getTransaction().rollback();//caso tenha algum problema eu dou um rollback na transação e ele reverte
-        }
+
+    private EntityManager em;
+
+    public EmpresaDAO(EntityManager em) {
+        this.em=em;
     }
 
-      public List<Cliente> exibir(){
-        EntityManager manager=getEntityManager();
-        try {
-            Query query= manager.createQuery("SELECT object(c) from Cliente as c");
-            return query.getResultList();
 
+    public Empresa save(Empresa empresa) {
+
+
+
+        try{
+            //inicia uma transação no banco de dados
+            em.getTransaction().begin();
+            System.out.println("Salvando empresa");
+
+            //verifica se a empresa está salva no BD
+            if(empresa.getId()==null){
+                //salva os dados da pessoa no BD
+                em.persist(empresa);
+            }else{
+                //atualiza os dados da empresa
+                empresa=em.merge(empresa);
+            }
+            em.getTransaction().commit();
+
+        } catch (Exception e){
+            em.getTransaction().rollback();
+             System.err.println(e);
+        }
+        finally{
+            em.close();
+        }
+        return empresa;
+    }
+
+    /**
+     * Método que apaga a empresa do banco de dados.
+     * @param id
+     */
+    public void excluir(Long id) {
+
+
+        try {
+            //inicia uma transação no banco de dados
+            em.getTransaction().begin();
+
+            //Consulta a empresa no BD através do ID
+            Empresa empresa = em.find(Empresa.class, id);
+
+            System.out.println("Excluindo os dados de: " + empresa.getNome());
+
+            //remove a empresa da base de dados
+            em.remove(empresa);
+
+            //finalizar a transação
+            em.getTransaction().commit();
+
+        } finally {
+            em.close();
+        }
+    }
+        /**
+         * Consulta empresa pelo ID.
+         * @param id
+         * @return o objeto Empresa
+         */
+
+        public Empresa buscarPOrId(Long id){
+
+
+            Empresa empresa=null;
+
+            try{
+                //consulta uma empresa por ID
+                empresa= em.find(Empresa.class,id);
 
         }finally {
-            manager.close();
+                em.close();
+            }
+        return empresa;
+    }
+
+    /**
+     * Consulta todas as empresas.
+     * @param
+     * @return o objeto Empresa
+     */
+
+    public List<Empresa> findAll(){
+
+        List<Empresa> empresas=null;
+
+        try {
+            empresas=em.createQuery("from Empresa e").getResultList();//o e é o alias
+
+        }catch (Exception e){
+            System.err.println(e);
+        }finally {
+
+            em.close();
 
         }
-      }
+        return empresas;
+    }
+
+
+
 }
