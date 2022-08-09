@@ -1,6 +1,7 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,29 +29,16 @@ public class Professor {
     @Enumerated(EnumType.STRING)
     private Especializacao formacaoPlus;
 
-    @Column(name = "data_de_aniversario", length = 10)
-    private String dataAniversario;
-
-    @Column(name = "registro_geral", length = 12)
-    private String rg;
-
-    @Column(name = "cpf_professor", length = 14)
-    private String cpf;
 
     @Column(name = "endereco_professor", length = 150)
     private String endereco;
 
-    @Column(name = "telefone_professor")
-    private  String telefone;
-
     @Column(name = "email_professor")
     private  String email;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "professor_unidade_escolar")
-    private List<UnidadeEscolar> unidEscolares;
-
-
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "professor_unidade")
+    private List<Unidade> unidades=new ArrayList<>();
 
 
     public Professor() {
@@ -96,29 +84,6 @@ public class Professor {
         this.formacaoPlus = formacaoPlus;
     }
 
-    public String getDataAniversario() {
-        return dataAniversario;
-    }
-
-    public void setDataAniversario(String dataAniversario) {
-        this.dataAniversario = dataAniversario;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
 
     public String getEndereco() {
         return endereco;
@@ -128,13 +93,6 @@ public class Professor {
         this.endereco = endereco;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
 
     public String getEmail() {
         return email;

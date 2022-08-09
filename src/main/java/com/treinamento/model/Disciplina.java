@@ -16,13 +16,13 @@ public class Disciplina {
     @Column(name = "nome_disciplina", nullable = false)
     private String disciplina;
 
-    @Column(name = "qtde_horas_disciplina")
-    private String horasAula;
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "disciplina_curso")
-    List<Curso> cursos;
+    private List<Curso> cursos;
 
+    @ManyToMany
+    @JoinTable(name ="disciplina_id" )
+    private  List<Semestre> semestresId;
 
 
     public Disciplina() {
@@ -44,15 +44,13 @@ public class Disciplina {
         this.disciplina = disciplina;
     }
 
-    public String getHorasAula() {
-        return horasAula;
+    public List<Curso> getCursos() {
+        return cursos;
     }
 
-    public void setHorasAula(String horasAula) {
-        this.horasAula = horasAula;
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
     }
-
-
 
     @Override
     public boolean equals(Object o) {

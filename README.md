@@ -36,3 +36,19 @@ colocar o atributo na classe Perfil.
 
 
 
+Por padrão, um mapeamento com @ManyToMany cria a tabela de associação com os nomes das entidades relacionadas, 
+separados por underscore, com as colunas com nomes também gerados automaticamente.
+
+
+ORM: Object Relation Mapper
+
+Classe -> ClasseDao -> Entidade(Relacionamento)
+
+Conceito de Anotations:
+@Table: nome da tabela -> defino o essa anotação para alterar o nome da tabela Ex: tb_dados, senão usar o table será o nome da classe
+@Id: um determinado atributo é a chave primária
+@Column: alterar o nome do atributo, ou seja o nome da coluna.Ex: @Column(name:"nome_aluno") private String name; 
+@Entity: é um entidade no banco de dados
+
+
+

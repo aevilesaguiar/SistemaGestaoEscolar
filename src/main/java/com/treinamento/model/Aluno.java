@@ -23,14 +23,8 @@ public class Aluno {
     @Column(name = "nome_completo_da_mae", length = 150)
     private String nomeMae;
 
-    @Column(name = "nome_completo_da_pai", length = 150)
-    private String nomePai;
-
     @Column(name = "data_de_aniversario", length = 10)
     private String dataAniversario;
-
-    @Column(name = "registro_geral", length = 12)
-    private String rg;
 
     @Column(name = "endereco_aluno", length = 150)
     private String endereco;
@@ -38,17 +32,13 @@ public class Aluno {
     @Column(name = "celular_responsavel")
     private  String telefone;
 
-    @Column(name = "email_responsavel")
-    private  String email;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "aluno_unidade_escolar")
-    private List<UnidadeEscolar> unidadesEscolares;
-
-
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "curso_id")
+    private List<Curso>  curso;
 
     public Aluno() {
     }
+
 
     public Long getId() {
         return id;
@@ -82,13 +72,6 @@ public class Aluno {
         this.nomeMae = nomeMae;
     }
 
-    public String getNomePai() {
-        return nomePai;
-    }
-
-    public void setNomePai(String nomePai) {
-        this.nomePai = nomePai;
-    }
 
     public String getDataAniversario() {
         return dataAniversario;
@@ -96,14 +79,6 @@ public class Aluno {
 
     public void setDataAniversario(String dataAniversario) {
         this.dataAniversario = dataAniversario;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
     }
 
     public String getEndereco() {
@@ -122,13 +97,6 @@ public class Aluno {
         this.telefone = telefone;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @Override
     public boolean equals(Object o) {

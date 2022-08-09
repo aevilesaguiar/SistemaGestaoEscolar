@@ -11,17 +11,19 @@ import java.util.List;
 
 public class EmpresaDAO {
 
-
-    private EntityManager em;
-
-    public EmpresaDAO(EntityManager em) {
-        this.em=em;
+    public EntityManager getEm(){
+        EntityManagerFactory factory= Persistence.createEntityManagerFactory("sistema");
+        return factory.createEntityManager();
     }
 
+    EntityManager em=getEm();
+
+    /**
+     * Método que salva e altera empresa do banco de dados.
+     * @param empresa
+     */
 
     public Empresa save(Empresa empresa) {
-
-
 
         try{
             //inicia uma transação no banco de dados
@@ -30,8 +32,8 @@ public class EmpresaDAO {
 
             //verifica se a empresa está salva no BD
             if(empresa.getId()==null){
-                //salva os dados da pessoa no BD
-                em.persist(empresa);
+
+                em.persist(empresa);//persiste os dados no BD executa o insert
             }else{
                 //atualiza os dados da empresa
                 empresa=em.merge(empresa);
@@ -39,7 +41,7 @@ public class EmpresaDAO {
             em.getTransaction().commit();
 
         } catch (Exception e){
-            em.getTransaction().rollback();
+            em.getTransaction().rollback(); //usamos quando temos vários deletes e updates
              System.err.println(e);
         }
         finally{
@@ -52,7 +54,7 @@ public class EmpresaDAO {
      * Método que apaga a empresa do banco de dados.
      * @param id
      */
-    public void excluir(Long id) {
+    public void delete(Long id) {
 
 
         try {
@@ -80,7 +82,7 @@ public class EmpresaDAO {
          * @return o objeto Empresa
          */
 
-        public Empresa buscarPOrId(Long id){
+        public Empresa findById(Long id){
 
 
             Empresa empresa=null;

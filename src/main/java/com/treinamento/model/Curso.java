@@ -1,6 +1,7 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,15 +20,16 @@ public class Curso {
     @Column(name = "hora_aula", nullable = false)
     private String horas;
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "unidade_id")
+    private List<Unidade> unidadeList;
 
+    @ManyToMany(mappedBy = "curso",cascade = CascadeType.PERSIST)//quando eu sal
+    private List<Aluno> alunos=new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "semestre_curso")
-    private List<Semestre> semestres;
-
-    @OneToMany(mappedBy = "cursos", cascade = CascadeType.ALL)//se eu não colocar essa anotação ele não será bidirecional,
-    private List<Disciplina> disciplinas;
-
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "curso_semestre")
+    List <Semestre> semestres;
 
     public Curso() {
     }
@@ -55,6 +57,8 @@ public class Curso {
     public void setHoras(String horas) {
         this.horas = horas;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

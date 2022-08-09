@@ -1,11 +1,12 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "periodo_curso")
+@Table(name = "semestre")
 public class Semestre {
 
     @Id
@@ -15,12 +16,16 @@ public class Semestre {
     @Column(name = "periodo_curso", nullable = false)
     private String periodo;
 
+    @ManyToMany(mappedBy = "semestres",cascade = CascadeType.PERSIST)
+    private List <Curso> cursos=new ArrayList<>();
 
-    @ManyToMany(mappedBy = "disciplinas")
-    private List<Curso> cursos;
+    @OneToMany(mappedBy = "semestreId")
+    private List<Disciplina> disciplinas= new ArrayList<>();
 
     public Semestre() {
     }
+
+
 
     public Long getId() {
         return id;
