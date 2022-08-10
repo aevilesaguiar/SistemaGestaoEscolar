@@ -16,11 +16,10 @@ public class Semestre {
     @Column(name = "periodo_curso", nullable = false)
     private String periodo;
 
-    @ManyToMany(mappedBy = "semestres",cascade = CascadeType.PERSIST)
-    private List <Curso> cursos=new ArrayList<>();
+    @ManyToMany(mappedBy = "semestreList")
+    private List<Curso> cursoList;
 
-    @OneToMany(mappedBy = "semestreId")
-    private List<Disciplina> disciplinas= new ArrayList<>();
+
 
     public Semestre() {
     }

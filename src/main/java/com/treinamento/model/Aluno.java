@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cadastro_aluno")
+@Table(name = "aluno")
 public class Aluno {
 
     @Id
@@ -32,9 +32,14 @@ public class Aluno {
     @Column(name = "celular_responsavel")
     private  String telefone;
 
+    @ManyToMany(mappedBy = "alunos") //
+    private List<Unidade> unidades;
+
+
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "curso_id")
-    private List<Curso>  curso;
+    @JoinTable(name = "aluno_curso")
+    private List<Curso> cursos;
+
 
     public Aluno() {
     }

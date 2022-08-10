@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cadastro_professor")
+@Table(name = "professor")
 public class Professor {
 
     @Id
@@ -36,9 +36,9 @@ public class Professor {
     @Column(name = "email_professor")
     private  String email;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "professor_unidade")
-    private List<Unidade> unidades=new ArrayList<>();
+
+    @ManyToMany(mappedBy = "professores")
+    private List<Unidade> unidades;
 
 
     public Professor() {

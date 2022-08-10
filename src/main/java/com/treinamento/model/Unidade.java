@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cadastro_unidade_escolar")
+@Table(name = "unidade")
 public class Unidade {
 
     @Id
@@ -17,17 +17,22 @@ public class Unidade {
     @Column(name = "nome_unidade_escolar", length = 180)
     private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "unidades", nullable = false )
-    private Empresa empresa=new Empresa();
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "empresa_id" )
+    private Empresa empresa;
 
-    @ManyToMany(mappedBy = "unidadeList", cascade = CascadeType.PERSIST)
-    private List<Curso> cursos=new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "aluno_unidade")
+    private List<Aluno>alunos;
 
-    @ManyToMany(mappedBy = "unidades")
-    private List<Professor> professores=new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "professor_unidade")
+    private List<Professor> professores;
 
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "curso_unidade")
+    private List<Curso> cursos;
 
     public Unidade() {
     }
