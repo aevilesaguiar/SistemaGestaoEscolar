@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cadastro_disciplina")
+@Table(name = "disciplina")
 public class Disciplina {
 
     @Id
@@ -16,16 +16,23 @@ public class Disciplina {
     @Column(name = "nome_disciplina", nullable = false)
     private String disciplina;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "disciplina_curso")
-    private List<Curso> cursos;
-
-    @ManyToMany
-    @JoinTable(name ="disciplina_id" )
-    private  List<Semestre> semestresId;
-
+    @ManyToOne
+    @JoinColumn(name = "disciplina_id")
+    private Semestre semestre;
 
     public Disciplina() {
+    }
+
+    public Disciplina(String disciplina) {
+        this.disciplina = disciplina;
+    }
+
+    public Semestre getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(Semestre semestre) {
+        this.semestre = semestre;
     }
 
     public Long getId() {
@@ -44,13 +51,7 @@ public class Disciplina {
         this.disciplina = disciplina;
     }
 
-    public List<Curso> getCursos() {
-        return cursos;
-    }
 
-    public void setCursos(List<Curso> cursos) {
-        this.cursos = cursos;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -16,16 +16,49 @@ public class Semestre {
     @Column(name = "periodo_curso", nullable = false)
     private String periodo;
 
-    @ManyToMany(mappedBy = "semestres",cascade = CascadeType.PERSIST)
-    private List <Curso> cursos=new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "curso_semestre")
+    private Curso curso;
 
-    @OneToMany(mappedBy = "semestreId")
-    private List<Disciplina> disciplinas= new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "semestre")
+    private List<Disciplina> disciplinas=new ArrayList<>();
+
 
     public Semestre() {
     }
 
+    public Semestre(String periodo, Curso curso, List<Disciplina> disciplinas) {
+        this.periodo = periodo;
+        this.curso = curso;
+        this.disciplinas = disciplinas;
+    }
 
+    public Semestre(String periodo, List<Disciplina> disciplinas) {
+        this.periodo = periodo;
+        this.disciplinas = disciplinas;
+    }
+
+    public Semestre(String periodo) {
+        this.periodo = periodo;
+    }
+
+    public Curso getCurso() {
+        return curso;
+    }
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
 
     public Long getId() {
         return id;

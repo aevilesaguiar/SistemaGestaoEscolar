@@ -52,7 +52,7 @@ public class UnidadeDAO {
            em.getTransaction().begin();
 
           Unidade unidade =em.find(Unidade.class,id);
-           System.out.println("Excluindo os dados de: " + unidade.getNome());
+           System.out.println("Excluindo os dados de: " + unidade.getEmpresa());
 
            em.remove(unidade);
 

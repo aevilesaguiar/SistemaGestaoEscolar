@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cadastro_empresa")
+@Table(name = "empresa")
 public class Empresa {
 
     @Id
@@ -19,13 +19,20 @@ public class Empresa {
     @Column(name = "nome_empresa",length = 120)
     private String nome;
 
+    @Column(name = "cnpj", length = 18, nullable = false)
+    private String cnpj;
+
     // lado forte do relacionamento
    // chave estrangeira fica do outro lado
-    @OneToMany(cascade = CascadeType.PERSIST,mappedBy ="empresa", orphanRemoval = true )//se remover a empresa remove todas as unidades
-    private List<Unidade> unidades=new ArrayList<>();
+    @OneToMany(cascade = CascadeType.PERSIST,mappedBy ="empresa" )//se remover a empresa remove todas as unidades
+    private List<Unidade> unidades;
 
 
     public Empresa() {
+    }
+
+    public Empresa(String nome) {
+        this.nome = nome;
     }
 
     public Empresa(String nome, List<Unidade> unidades) {

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cadastro_unidade_escolar")
+@Table(name = "unidade")
 public class Unidade {
 
     @Id
@@ -14,27 +14,70 @@ public class Unidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Double id;
 
-    @Column(name = "nome_unidade_escolar", length = 180)
-    private String nome;
+    @Column(name = "endereco", length = 180)
+    private String enderecoo;
 
-    @ManyToOne
-    @JoinColumn(name = "unidades", nullable = false )
-    private Empresa empresa=new Empresa();
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "empresa_id" )
+    private Empresa empresa;
 
-    @ManyToMany(mappedBy = "unidadeList", cascade = CascadeType.PERSIST)
-    private List<Curso> cursos=new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "aluno_unidade")
+    private List<Aluno>alunos;
 
-    @ManyToMany(mappedBy = "unidades")
-    private List<Professor> professores=new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "professor_unidade")
+    private List<Professor> professores;
 
-
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "curso_unidade")
+    private List<Curso> cursos;
 
     public Unidade() {
     }
 
-    public Unidade(String nome, Empresa empresa) {
-        this.nome = nome;
+    public Unidade(String enderecoo) {
+        this.enderecoo = enderecoo;
+    }
+
+    public Unidade(String enderecoo, Empresa empresa, List<Aluno> alunos, List<Professor> professores, List<Curso> cursos) {
+        this.enderecoo = enderecoo;
         this.empresa = empresa;
+        this.alunos = alunos;
+        this.professores = professores;
+        this.cursos = cursos;
+    }
+
+    public String getEnderecoo() {
+        return enderecoo;
+    }
+
+    public void setEnderecoo(String enderecoo) {
+        this.enderecoo = enderecoo;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
+
+    public List<Professor> getProfessores() {
+        return professores;
+    }
+
+    public void setProfessores(List<Professor> professores) {
+        this.professores = professores;
+    }
+
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
     }
 
     public Empresa getEmpresa() {
@@ -53,14 +96,6 @@ public class Unidade {
 
     public void setId(Double id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
 

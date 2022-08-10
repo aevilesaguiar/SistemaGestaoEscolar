@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cadastro_aluno")
+@Table(name = "aluno")
 public class Aluno {
 
     @Id
@@ -13,32 +13,46 @@ public class Aluno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_completo_aluno")
+    @Column(name = "nome_completo_aluno", nullable = false)
     private String nomeCompleto;
 
-    @Column(name = "sexo_aluno", nullable = false)
+    @Column(name = "matricula", nullable = false, length = 10)
+    private String matricula;
+
+    @Column(name = "sexo_aluno")
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
 
-    @Column(name = "nome_completo_da_mae", length = 150)
-    private String nomeMae;
 
-    @Column(name = "data_de_aniversario", length = 10)
-    private String dataAniversario;
 
-    @Column(name = "endereco_aluno", length = 150)
-    private String endereco;
+    @ManyToMany(mappedBy = "alunos") //
+    private List<Unidade> unidades;
 
-    @Column(name = "celular_responsavel")
-    private  String telefone;
-
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "curso_id")
-    private List<Curso>  curso;
 
     public Aluno() {
     }
 
+    public Aluno(String nomeCompleto, String matricula, Sexo sexo) {
+        this.nomeCompleto = nomeCompleto;
+        this.matricula = matricula;
+        this.sexo = sexo;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public List<Unidade> getUnidades() {
+        return unidades;
+    }
+
+    public void setUnidades(List<Unidade> unidades) {
+        this.unidades = unidades;
+    }
 
     public Long getId() {
         return id;
@@ -56,6 +70,7 @@ public class Aluno {
         this.nomeCompleto = nomeCompleto;
     }
 
+
     public Sexo getSexo() {
         return sexo;
     }
@@ -64,38 +79,9 @@ public class Aluno {
         this.sexo = sexo;
     }
 
-    public String getNomeMae() {
-        return nomeMae;
-    }
-
-    public void setNomeMae(String nomeMae) {
-        this.nomeMae = nomeMae;
-    }
 
 
-    public String getDataAniversario() {
-        return dataAniversario;
-    }
 
-    public void setDataAniversario(String dataAniversario) {
-        this.dataAniversario = dataAniversario;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
 
 
     @Override

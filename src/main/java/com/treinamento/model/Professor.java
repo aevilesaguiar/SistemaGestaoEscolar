@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "cadastro_professor")
+@Table(name = "professor")
 public class Professor {
 
     @Id
@@ -14,21 +14,15 @@ public class Professor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_completo_professor")
+    @Column(name = "nome_professor")
     private String nomeCompleto;
+
+    @Column(name = "matricula_professor")
+    private String matricula;
 
     @Column(name = "sexo_professor", nullable = false)
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
-
-    @Column(name = "formacao", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Graduacao formacaoBasica;
-
-    @Column(name = "especializacao", nullable = true)
-    @Enumerated(EnumType.STRING)
-    private Especializacao formacaoPlus;
-
 
     @Column(name = "endereco_professor", length = 150)
     private String endereco;
@@ -36,9 +30,9 @@ public class Professor {
     @Column(name = "email_professor")
     private  String email;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "professor_unidade")
-    private List<Unidade> unidades=new ArrayList<>();
+
+    @ManyToMany(mappedBy = "professores")
+    private List<Unidade> unidades;
 
 
     public Professor() {
@@ -68,23 +62,6 @@ public class Professor {
         this.sexo = sexo;
     }
 
-    public Graduacao getFormacaoBasica() {
-        return formacaoBasica;
-    }
-
-    public void setFormacaoBasica(Graduacao formacaoBasica) {
-        this.formacaoBasica = formacaoBasica;
-    }
-
-    public Especializacao getFormacaoPlus() {
-        return formacaoPlus;
-    }
-
-    public void setFormacaoPlus(Especializacao formacaoPlus) {
-        this.formacaoPlus = formacaoPlus;
-    }
-
-
     public String getEndereco() {
         return endereco;
     }
@@ -100,6 +77,22 @@ public class Professor {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public List<Unidade> getUnidades() {
+        return unidades;
+    }
+
+    public void setUnidades(List<Unidade> unidades) {
+        this.unidades = unidades;
     }
 
     @Override
