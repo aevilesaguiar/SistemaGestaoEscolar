@@ -16,23 +16,13 @@ public class Disciplina {
     @Column(name = "nome_disciplina", nullable = false)
     private String disciplina;
 
-    @ManyToOne
-    @JoinColumn(name = "disciplina_id")
-    private Semestre semestre;
+
+    @ManyToMany(mappedBy = "disciplinas")
+    private List<Curso> cursoList;
+
+
 
     public Disciplina() {
-    }
-
-    public Disciplina(String disciplina) {
-        this.disciplina = disciplina;
-    }
-
-    public Semestre getSemestre() {
-        return semestre;
-    }
-
-    public void setSemestre(Semestre semestre) {
-        this.semestre = semestre;
     }
 
     public Long getId() {

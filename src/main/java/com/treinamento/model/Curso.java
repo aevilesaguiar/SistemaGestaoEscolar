@@ -17,38 +17,27 @@ public class Curso {
     @Column(name = "nome_curso",nullable = false)
     private String nomeCurso;
 
+    @Column(name = "hora_aula", nullable = false)
+    private String horas;
 
+    @ManyToMany(mappedBy = "cursos")
+    private List<Aluno> alunos;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "curso_unidade")
     private List<Unidade> unidade;
 
 
-    @OneToMany(mappedBy = "disciplinas",cascade = CascadeType.PERSIST)
-    private List<Semestre> semestreList= new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "curso_semestre")
+    private List<Semestre> semestreList;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "curso_disciplina")
+    private List<Disciplina> disciplinas;
+
 
     public Curso() {
-    }
-
-    public Curso(String nomeCurso) {
-        this.nomeCurso = nomeCurso;
-    }
-
-    public List<Unidade> getUnidade() {
-        return unidade;
-    }
-
-    public void setUnidade(List<Unidade> unidade) {
-        this.unidade = unidade;
-    }
-
-
-    public List<Semestre> getSemestreList() {
-        return semestreList;
-    }
-
-    public void setSemestreList(List<Semestre> semestreList) {
-        this.semestreList = semestreList;
     }
 
     public Long getId() {
@@ -65,6 +54,14 @@ public class Curso {
 
     public void setNomeCurso(String nomeCurso) {
         this.nomeCurso = nomeCurso;
+    }
+
+    public String getHoras() {
+        return horas;
+    }
+
+    public void setHoras(String horas) {
+        this.horas = horas;
     }
 
 
