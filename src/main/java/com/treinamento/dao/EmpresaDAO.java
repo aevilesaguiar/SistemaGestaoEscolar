@@ -32,6 +32,7 @@ public class EmpresaDAO {
             if(empresa.getId()==null){
 
                 em.persist(empresa);//persiste os dados no BD executa o insert
+                System.out.println(empresa.getNome());
             }else{
                 //atualiza os dados da empresa
                 empresa=em.merge(empresa);
@@ -39,11 +40,13 @@ public class EmpresaDAO {
             em.getTransaction().commit();
 
         } catch (Exception e){
-            em.getTransaction().rollback(); //usamos quando temos vários deletes e updates
+            System.out.println("Erro de saida");
+          //  em.getTransaction().rollback(); //usamos quando temos vários deletes e updates
              System.err.println(e);
+
         }
         finally{
-            em.close();
+          // em.close();
         }
         return empresa;
     }
@@ -71,7 +74,7 @@ public class EmpresaDAO {
             em.getTransaction().commit();
 
         } finally {
-            em.close();
+        //    em.close();
         }
     }
         /**
@@ -90,7 +93,7 @@ public class EmpresaDAO {
                 empresa= em.find(Empresa.class,id);
 
         }finally {
-                em.close();
+          //      em.close();
             }
         return empresa;
     }
@@ -112,7 +115,7 @@ public class EmpresaDAO {
             System.err.println(e);
         }finally {
 
-            em.close();
+           // em.close();
 
         }
         return empresas;

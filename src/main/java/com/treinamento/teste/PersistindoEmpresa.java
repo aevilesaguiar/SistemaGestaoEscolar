@@ -25,15 +25,18 @@ public class PersistindoEmpresa {
         EmpresaDAO empresaDAO= new EmpresaDAO(em);
         UnidadeDAO unidadeDAO=new UnidadeDAO(em);
 
-        em.getTransaction().begin();
+
         //perssit empresa
 
         empresaDAO.save(empresa);
         empresaDAO.save(empresa1);
 
+        unidadeDAO.save(unidade);
+        unidadeDAO.save(unidade2);
 
-        em.getTransaction().commit();
         em.close();
+
+
 
         /*
 

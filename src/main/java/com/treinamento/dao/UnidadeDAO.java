@@ -42,7 +42,7 @@ public class UnidadeDAO {
              System.err.println(e);
         }
         finally{
-            em.close();
+         //   em.close();
         }
         return unidade;
     }
@@ -70,7 +70,7 @@ public class UnidadeDAO {
             em.getTransaction().commit();
 
         } finally {
-            em.close();
+           // em.close();
         }
     }
         /**
@@ -89,7 +89,7 @@ public class UnidadeDAO {
                 unidade= em.find(Unidade.class,id);
 
         }finally {
-                em.close();
+               // em.close();
             }
         return unidade;
     }
@@ -111,7 +111,7 @@ public class UnidadeDAO {
             System.err.println(e);
         }finally {
 
-            em.close();
+           // em.close();
 
         }
         return unidades;
