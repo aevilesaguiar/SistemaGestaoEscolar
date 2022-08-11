@@ -17,29 +17,48 @@ public class Unidade {
     @Column(name = "nome_unidade_escolar", length = 180)
     private String nome;
 
+    @Column(name = "endereco")
+    private String endereco;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "empresa_id" )
+    @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "aluno_unidade")
-    private List<Aluno>alunos;
+    @JoinTable(name = "unidade_aluno")
+    private List<Aluno> alunos;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "professor_unidade")
+    @JoinTable(name = "unidade_professor")
     private List<Professor> professores;
 
-
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "curso_unidade")
+    @JoinTable(name = "cursos")
     private List<Curso> cursos;
 
     public Unidade() {
     }
 
-    public Unidade(String nome, Empresa empresa) {
+    public Unidade(String nome, String endereco, Empresa empresa) {
         this.nome = nome;
+        this.endereco = endereco;
         this.empresa = empresa;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public Empresa getEmpresa() {
@@ -51,34 +70,4 @@ public class Unidade {
     }
 
 
-
-    public Double getId() {
-        return id;
-    }
-
-    public void setId(Double id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Unidade that = (Unidade) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

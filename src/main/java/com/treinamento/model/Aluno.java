@@ -13,37 +13,29 @@ public class Aluno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_completo_aluno")
+    @Column(name = "matricula",nullable = false)
+    private String matricula;
+
+    @Column(name = "nome_completo_aluno", nullable = false)
     private String nomeCompleto;
 
     @Column(name = "sexo_aluno", nullable = false)
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
 
-    @Column(name = "nome_completo_da_mae", length = 150)
-    private String nomeMae;
-
-    @Column(name = "data_de_aniversario", length = 10)
-    private String dataAniversario;
-
-    @Column(name = "endereco_aluno", length = 150)
-    private String endereco;
-
-    @Column(name = "celular_responsavel")
-    private  String telefone;
-
-    @ManyToMany(mappedBy = "alunos") //
+    @ManyToMany(mappedBy = "alunos")
     private List<Unidade> unidades;
 
-
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "aluno_curso")
-    private List<Curso> cursos;
 
 
     public Aluno() {
     }
 
+    public Aluno(String matricula, String nomeCompleto, Sexo sexo) {
+        this.matricula = matricula;
+        this.nomeCompleto = nomeCompleto;
+        this.sexo = sexo;
+    }
 
     public Long getId() {
         return id;
@@ -51,6 +43,14 @@ public class Aluno {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
     public String getNomeCompleto() {
@@ -69,50 +69,11 @@ public class Aluno {
         this.sexo = sexo;
     }
 
-    public String getNomeMae() {
-        return nomeMae;
+    public List<Unidade> getUnidades() {
+        return unidades;
     }
 
-    public void setNomeMae(String nomeMae) {
-        this.nomeMae = nomeMae;
-    }
-
-
-    public String getDataAniversario() {
-        return dataAniversario;
-    }
-
-    public void setDataAniversario(String dataAniversario) {
-        this.dataAniversario = dataAniversario;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Aluno aluno = (Aluno) o;
-        return Objects.equals(id, aluno.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setUnidades(List<Unidade> unidades) {
+        this.unidades = unidades;
     }
 }

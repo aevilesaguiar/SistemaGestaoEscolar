@@ -17,27 +17,26 @@ public class Curso {
     @Column(name = "nome_curso",nullable = false)
     private String nomeCurso;
 
-    @Column(name = "hora_aula", nullable = false)
-    private String horas;
-
     @ManyToMany(mappedBy = "cursos")
-    private List<Aluno> alunos;
-
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "curso_unidade")
-    private List<Unidade> unidade;
+    private List<Unidade> unidades;
 
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "curso_semestre")
-    private List<Semestre> semestreList;
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.PERSIST)
+    private List<Semestre> semestres;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "curso_disciplina")
-    private List<Disciplina> disciplinas;
 
 
     public Curso() {
+    }
+
+
+
+    public String getNomeCurso() {
+        return nomeCurso;
+    }
+
+    public void setNomeCurso(String nomeCurso) {
+        this.nomeCurso = nomeCurso;
     }
 
     public Long getId() {
@@ -48,34 +47,19 @@ public class Curso {
         this.id = id;
     }
 
-    public String getNomeCurso() {
-        return nomeCurso;
+    public List<Unidade> getUnidades() {
+        return unidades;
     }
 
-    public void setNomeCurso(String nomeCurso) {
-        this.nomeCurso = nomeCurso;
+    public void setUnidades(List<Unidade> unidades) {
+        this.unidades = unidades;
     }
 
-    public String getHoras() {
-        return horas;
+    public List<Semestre> getSemestres() {
+        return semestres;
     }
 
-    public void setHoras(String horas) {
-        this.horas = horas;
-    }
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Curso curso = (Curso) o;
-        return Objects.equals(id, curso.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setSemestres(List<Semestre> semestres) {
+        this.semestres = semestres;
     }
 }

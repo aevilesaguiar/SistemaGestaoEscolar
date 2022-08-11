@@ -17,8 +17,9 @@ public class Disciplina {
     private String disciplina;
 
 
-    @ManyToMany(mappedBy = "disciplinas")
-    private List<Curso> cursoList;
+    @ManyToOne
+    @JoinColumn(name = "semestre_id")
+    private Semestre semestre;
 
 
 
@@ -41,18 +42,11 @@ public class Disciplina {
         this.disciplina = disciplina;
     }
 
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Disciplina that = (Disciplina) o;
-        return Objects.equals(id, that.id);
+    public Semestre getSemestre() {
+        return semestre;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setSemestre(Semestre semestre) {
+        this.semestre = semestre;
     }
 }

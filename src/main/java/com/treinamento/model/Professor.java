@@ -24,18 +24,19 @@ public class Professor {
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
 
-    @Column(name = "endereco_professor", length = 150)
-    private String endereco;
-
-    @Column(name = "email_professor")
-    private  String email;
-
 
     @ManyToMany(mappedBy = "professores")
-    private List<Unidade> unidades;
+    private List<Unidade> unidade;
+
 
 
     public Professor() {
+    }
+
+    public Professor(String nomeCompleto, String matricula, Sexo sexo) {
+        this.nomeCompleto = nomeCompleto;
+        this.matricula = matricula;
+        this.sexo = sexo;
     }
 
     public Long getId() {
@@ -54,31 +55,6 @@ public class Professor {
         this.nomeCompleto = nomeCompleto;
     }
 
-    public Sexo getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(Sexo sexo) {
-        this.sexo = sexo;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getMatricula() {
         return matricula;
     }
@@ -87,24 +63,19 @@ public class Professor {
         this.matricula = matricula;
     }
 
-    public List<Unidade> getUnidades() {
-        return unidades;
+    public Sexo getSexo() {
+        return sexo;
     }
 
-    public void setUnidades(List<Unidade> unidades) {
-        this.unidades = unidades;
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Professor professor = (Professor) o;
-        return Objects.equals(id, professor.id);
+    public List<Unidade> getUnidade() {
+        return unidade;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setUnidade(List<Unidade> unidade) {
+        this.unidade = unidade;
     }
 }

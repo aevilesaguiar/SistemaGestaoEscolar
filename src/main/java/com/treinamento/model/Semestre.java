@@ -16,15 +16,16 @@ public class Semestre {
     @Column(name = "periodo_curso", nullable = false)
     private String periodo;
 
-    @ManyToMany(mappedBy = "semestreList")
-    private List<Curso> cursoList;
+    @ManyToOne
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
 
+    @OneToMany(mappedBy = "semestre")
+    private List<Disciplina> disciplinas;
 
 
     public Semestre() {
     }
-
-
 
     public Long getId() {
         return id;
@@ -42,16 +43,19 @@ public class Semestre {
         this.periodo = periodo;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Semestre that = (Semestre) o;
-        return Objects.equals(id, that.id);
+    public Curso getCurso() {
+        return curso;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
     }
 }
