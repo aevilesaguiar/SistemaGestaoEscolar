@@ -1,13 +1,11 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "semestre")
-public class Semestre {
+public class PeriodoCurso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +18,15 @@ public class Semestre {
     @JoinColumn(name = "curso_id")
     private Curso curso;
 
-    @OneToMany(mappedBy = "semestre")
+    @OneToMany(mappedBy = "periodoCurso")
     private List<Disciplina> disciplinas;
 
 
-    public Semestre() {
+    public PeriodoCurso() {
+    }
+
+    public PeriodoCurso(String periodo) {
+        this.periodo = periodo;
     }
 
     public Long getId() {
@@ -58,4 +60,6 @@ public class Semestre {
     public void setDisciplinas(List<Disciplina> disciplinas) {
         this.disciplinas = disciplinas;
     }
+
+
 }

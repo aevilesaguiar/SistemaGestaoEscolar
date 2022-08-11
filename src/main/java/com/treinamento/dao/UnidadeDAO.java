@@ -2,26 +2,25 @@ package com.treinamento.dao;
 
 
 import com.treinamento.model.Empresa;
+import com.treinamento.model.Unidade;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
 
 
-public class EmpresaDAO {
+public class UnidadeDAO {
     private  EntityManager em;
 
-    public EmpresaDAO(EntityManager em){
+    public UnidadeDAO(EntityManager em){
         this.em=em;
     }
 
     /**
      * Método que salva e altera empresa do banco de dados.
-     * @param empresa
+     * @param unidade
      */
 
-    public Empresa save(Empresa empresa) {
+    public Unidade save(Unidade unidade) {
 
         try{
             //inicia uma transação no banco de dados
@@ -29,12 +28,12 @@ public class EmpresaDAO {
             System.out.println("Salvando empresa");
 
             //verifica se a empresa está salva no BD
-            if(empresa.getId()==null){
+            if(unidade.getId()==null){
 
-                em.persist(empresa);//persiste os dados no BD executa o insert
+                em.persist(unidade);//persiste os dados no BD executa o insert
             }else{
                 //atualiza os dados da empresa
-                empresa=em.merge(empresa);
+                unidade=em.merge(unidade);
             }
             em.getTransaction().commit();
 
@@ -45,7 +44,7 @@ public class EmpresaDAO {
         finally{
             em.close();
         }
-        return empresa;
+        return unidade;
     }
 
     /**
@@ -60,12 +59,12 @@ public class EmpresaDAO {
             em.getTransaction().begin();
 
             //Consulta a empresa no BD através do ID
-            Empresa empresa = em.find(Empresa.class, id);
+            Unidade unidade = em.find(Unidade.class, id);
 
-            System.out.println("Excluindo os dados de: " + empresa.getNome());
+            System.out.println("Excluindo os dados de: " + unidade.getNome());
 
             //remove a empresa da base de dados
-            em.remove(empresa);
+            em.remove(unidade);
 
             //finalizar a transação
             em.getTransaction().commit();
@@ -80,33 +79,33 @@ public class EmpresaDAO {
          * @return o objeto Empresa
          */
 
-        public Empresa findById(Long id){
+        public Unidade findById(Long id){
 
 
-            Empresa empresa=null;
+            Unidade unidade=null;
 
             try{
                 //consulta uma empresa por ID
-                empresa= em.find(Empresa.class,id);
+                unidade= em.find(Unidade.class,id);
 
         }finally {
                 em.close();
             }
-        return empresa;
+        return unidade;
     }
 
     /**
-     * Consulta todas as empresas.
+     * Consulta todas as unidades.
      * @param
-     * @return o objeto Empresa
+     * @return o objeto Unidade
      */
 
-    public List<Empresa> findAll(){
+    public List<Unidade> findAll(){
 
-        List<Empresa> empresas=null;
+        List<Unidade> unidades=null;
 
         try {
-            empresas=em.createQuery("from Empresa e").getResultList();//o e é o alias
+            unidades=em.createQuery("from Unidades e").getResultList();//o e é o alias
 
         }catch (Exception e){
             System.err.println(e);
@@ -115,7 +114,7 @@ public class EmpresaDAO {
             em.close();
 
         }
-        return empresas;
+        return unidades;
     }
 
 

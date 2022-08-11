@@ -19,8 +19,7 @@ public class Empresa {
     @Column(name = "nome_empresa",length = 120)
     private String nome;
 
-    @Column(name = "cnpj", length = 18, nullable = false)
-    private String cnpj;
+
 
     // lado forte do relacionamento
    // chave estrangeira fica do outro lado
@@ -30,6 +29,8 @@ public class Empresa {
 
     public Empresa() {
     }
+
+
 
     public Empresa(String nome) {
         this.nome = nome;
@@ -64,5 +65,6 @@ public class Empresa {
     public void setUnidades(List<Unidade> unidades) {
         this.unidades = unidades;
     }
+
 
 }

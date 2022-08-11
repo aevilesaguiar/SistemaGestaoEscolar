@@ -2,8 +2,6 @@ package com.treinamento.model;
 
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "disciplina")
@@ -19,11 +17,15 @@ public class Disciplina {
 
     @ManyToOne
     @JoinColumn(name = "semestre_id")
-    private Semestre semestre;
+    private PeriodoCurso periodoCurso;
 
 
 
     public Disciplina() {
+    }
+
+    public Disciplina(String disciplina) {
+        this.disciplina = disciplina;
     }
 
     public Long getId() {
@@ -42,11 +44,19 @@ public class Disciplina {
         this.disciplina = disciplina;
     }
 
-    public Semestre getSemestre() {
-        return semestre;
+    public PeriodoCurso getSemestre() {
+        return periodoCurso;
     }
 
-    public void setSemestre(Semestre semestre) {
-        this.semestre = semestre;
+    public void setSemestre(PeriodoCurso periodoCurso) {
+        this.periodoCurso = periodoCurso;
+    }
+
+    public PeriodoCurso getPeriodoCurso() {
+        return periodoCurso;
+    }
+
+    public void setPeriodoCurso(PeriodoCurso periodoCurso) {
+        this.periodoCurso = periodoCurso;
     }
 }

@@ -1,9 +1,7 @@
 package com.treinamento.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "curso")
@@ -22,20 +20,14 @@ public class Curso {
 
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.PERSIST)
-    private List<Semestre> semestres;
+    private List<PeriodoCurso> periodoCursos;
 
 
 
     public Curso() {
     }
 
-
-
-    public String getNomeCurso() {
-        return nomeCurso;
-    }
-
-    public void setNomeCurso(String nomeCurso) {
+    public Curso(String nomeCurso) {
         this.nomeCurso = nomeCurso;
     }
 
@@ -47,6 +39,14 @@ public class Curso {
         this.id = id;
     }
 
+    public String getNomeCurso() {
+        return nomeCurso;
+    }
+
+    public void setNomeCurso(String nomeCurso) {
+        this.nomeCurso = nomeCurso;
+    }
+
     public List<Unidade> getUnidades() {
         return unidades;
     }
@@ -55,11 +55,12 @@ public class Curso {
         this.unidades = unidades;
     }
 
-    public List<Semestre> getSemestres() {
-        return semestres;
+    public List<PeriodoCurso> getPeriodoCursos() {
+        return periodoCursos;
     }
 
-    public void setSemestres(List<Semestre> semestres) {
-        this.semestres = semestres;
+    public void setPeriodoCursos(List<PeriodoCurso> periodoCursos) {
+        this.periodoCursos = periodoCursos;
     }
+
 }
