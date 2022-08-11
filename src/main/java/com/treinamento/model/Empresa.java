@@ -14,7 +14,7 @@ public class Empresa {
     @Id
     @Column(name = "id_empresa")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Double id;
+    private Long id;
 
     @Column(name = "nome_empresa",length = 120)
     private String nome;
@@ -41,11 +41,11 @@ public class Empresa {
         this.unidades = unidades;
     }
 
-    public Double getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

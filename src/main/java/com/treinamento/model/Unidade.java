@@ -12,7 +12,7 @@ public class Unidade {
     @Id
     @Column(name = "id_unidade")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Double id;
+    private Long id;
 
     @Column(name = "nome_unidade", length = 180)
     private String nome;
@@ -69,11 +69,11 @@ public class Unidade {
         this.empresa = empresa;
     }
 
-    public Double getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

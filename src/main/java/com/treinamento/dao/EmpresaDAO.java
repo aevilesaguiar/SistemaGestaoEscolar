@@ -32,16 +32,17 @@ public class EmpresaDAO {
             if(empresa.getId()==null){
 
                 em.persist(empresa);//persiste os dados no BD executa o insert
-                System.out.println(empresa.getNome());
+                System.out.println("Atualizando Empresa:"+empresa.getId() +" - "+empresa.getNome());
             }else{
                 //atualiza os dados da empresa
                 empresa=em.merge(empresa);
+                System.out.println("Atualizando empresa: "+empresa.getId() +" - "+empresa.getNome());
             }
             em.getTransaction().commit();
 
         } catch (Exception e){
             System.out.println("Erro de saida");
-          //  em.getTransaction().rollback(); //usamos quando temos vários deletes e updates
+           em.getTransaction().rollback(); //usamos quando temos vários deletes e updates
              System.err.println(e);
 
         }

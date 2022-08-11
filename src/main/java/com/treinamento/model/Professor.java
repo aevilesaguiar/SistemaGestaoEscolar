@@ -12,7 +12,7 @@ public class Professor {
     @Id
     @Column(name = "cod_professor")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Double id;
+    private Long id;
 
     @Column(name = "nome_professor")
     private String nomeCompleto;
@@ -39,11 +39,11 @@ public class Professor {
         this.sexo = sexo;
     }
 
-    public Double getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

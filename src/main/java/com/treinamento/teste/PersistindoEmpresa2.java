@@ -4,31 +4,20 @@ package com.treinamento.teste;
 import com.treinamento.dao.*;
 import com.treinamento.model.*;
 
-
 import javax.persistence.EntityManager;
 import java.util.Arrays;
 
-public class PersistindoEmpresa {
+public class PersistindoEmpresa2 {
 
     public static void main(String[] args) {
         // obtém o entity manager
         EntityManager em = JPAUtil.getEntityManager();
 
-        Empresa empresa = new Empresa("USP") ;
+      /*  Empresa empresa = new Empresa("USP") ;
         Empresa empresa1 = new Empresa("Juscelino Kubtheck") ;
 
         Unidade unidade = new Unidade("Objetivo","Rua francisco,01,Serraria");
         Unidade unidade2 = new Unidade("Juscelino centro","Rua francisco,56,Dom pedro");
-
-        EmpresaDAO empresaDAO= new EmpresaDAO(em);
-        UnidadeDAO unidadeDAO=new UnidadeDAO(em);
-
-        empresaDAO.save(empresa);
-        empresaDAO.save(empresa1);
-
-        unidadeDAO.save(unidade);
-        unidadeDAO.save(unidade2);
-
 
 
         Curso curso= new Curso("Engenharia Macatronica");
@@ -42,36 +31,6 @@ public class PersistindoEmpresa {
         PeriodoCurso periodoCurso =new PeriodoCurso("Manhã");
         PeriodoCurso periodoCurso1 =new PeriodoCurso("Tarde");
         PeriodoCurso periodoCurso2 =new PeriodoCurso("Noite");
-        //perssit empresa
-
-        CursoDAO cursoDAO= new CursoDAO(em);
-        DisciplinaDAO disciplinaDAO=new DisciplinaDAO(em);
-        PeriodoCursoDAO periodoCursoDAO=new PeriodoCursoDAO(em);
-
-        cursoDAO.save(curso);
-        cursoDAO.save(curso1);
-
-        disciplinaDAO.save(disciplina);
-        disciplinaDAO.save(disciplina1);
-        disciplinaDAO.save(disciplina2);
-        disciplinaDAO.save(disciplina3);
-        periodoCursoDAO.save(periodoCurso);
-        periodoCursoDAO.save(periodoCurso1);
-        periodoCursoDAO.save(periodoCurso2);
-
-
-
-
-
-
-
-        em.close();
-
-
-
-        /*
-
-
 
 
         Aluno aluno=new Aluno("João da Silva","123445",Sexo.MASCULINO);
@@ -81,6 +40,24 @@ public class PersistindoEmpresa {
 
         Professor professor1=new Professor("Fernando","12545",Sexo.MASCULINO);
         Professor professor2=new Professor("Arlete","45698",Sexo.FEMININO);
+
+*/
+        //perssit empresa
+
+        EmpresaDAO empresaDAO= new EmpresaDAO(em);
+        UnidadeDAO unidadeDAO=new UnidadeDAO(em);
+        CursoDAO cursoDAO= new CursoDAO(em);
+        DisciplinaDAO disciplinaDAO=new DisciplinaDAO(em);
+        PeriodoCursoDAO periodoCursoDAO=new PeriodoCursoDAO(em);
+        AlunoDAO alunoDAO= new AlunoDAO(em);
+        ProfessorDAO professorDAO=new ProfessorDAO(em);
+
+        professorDAO.delete(2L);
+
+
+/*
+
+
 
         //setando os atributos
 
@@ -127,8 +104,48 @@ public class PersistindoEmpresa {
         unidade2.setEmpresa(empresa1);
         unidade2.setCursos(Arrays.asList(curso1));
 
+        cursoDAO.save(curso);
+        cursoDAO.save(curso1);
 
-*/
+
+        empresaDAO.save(empresa);
+        empresaDAO.save(empresa1);
+
+        unidadeDAO.save(unidade);
+        unidadeDAO.save(unidade2);
+
+        disciplinaDAO.save(disciplina);
+        disciplinaDAO.save(disciplina1);
+        disciplinaDAO.save(disciplina2);
+        disciplinaDAO.save(disciplina3);
+
+        periodoCursoDAO.save(periodoCurso);
+        periodoCursoDAO.save(periodoCurso1);
+        periodoCursoDAO.save(periodoCurso2);
+
+
+        alunoDAO.save(aluno);
+        alunoDAO.save(aluno1);
+        alunoDAO.save(aluno2);
+
+        professorDAO.save(professor1);
+        professorDAO.save(professor2);*/
+
+
+
+
+
+        em.close();
+
+
+
+
+
+
+
+
+
+
 
 
 

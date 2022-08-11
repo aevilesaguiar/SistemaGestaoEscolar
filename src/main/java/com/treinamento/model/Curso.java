@@ -10,7 +10,7 @@ public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Double id;
+    private Long id;
 
     @Column(name = "nome_curso",nullable = false)
     private String nomeCurso;
@@ -31,11 +31,11 @@ public class Curso {
         this.nomeCurso = nomeCurso;
     }
 
-    public Double getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

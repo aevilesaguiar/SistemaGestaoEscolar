@@ -11,7 +11,7 @@ public class Aluno {
     @Id
     @Column(name = "cod_aluno")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Double id;
+    private Long id;
 
     @Column(name = "matricula",nullable = false)
     private String matricula;
@@ -37,11 +37,11 @@ public class Aluno {
         this.sexo = sexo;
     }
 
-    public Double getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Double id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -76,4 +76,5 @@ public class Aluno {
     public void setUnidades(List<Unidade> unidades) {
         this.unidades = unidades;
     }
+
 }
