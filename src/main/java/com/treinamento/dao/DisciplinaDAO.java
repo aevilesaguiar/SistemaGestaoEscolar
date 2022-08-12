@@ -91,6 +91,7 @@ public class DisciplinaDAO {
             try{
                 //consulta uma disciplina por ID
                 disciplina= em.find(Disciplina.class,id);
+                System.out.println("ID Disciplina: "+disciplina.getDisciplina()+" Nome disciplina: "+disciplina.getDisciplina());
 
         }finally {
           //      em.close();

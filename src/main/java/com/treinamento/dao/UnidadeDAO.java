@@ -3,6 +3,7 @@ package com.treinamento.dao;
 
 import com.treinamento.model.Empresa;
 import com.treinamento.model.Unidade;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -16,7 +17,7 @@ public class UnidadeDAO {
     }
 
     /**
-     * Método que salva e altera empresa do banco de dados.
+     * Método que salva e altera unidade do banco de dados.
      * @param unidade
      */
 
@@ -25,14 +26,14 @@ public class UnidadeDAO {
         try{
             //inicia uma transação no banco de dados
             em.getTransaction().begin();
-            System.out.println("Salvando empresa");
+            System.out.println("Salvando Unidade");
 
-            //verifica se a empresa está salva no BD
+            //verifica se a unidade está salva no BD
             if(unidade.getId()==null){
 
                 em.persist(unidade);//persiste os dados no BD executa o insert
             }else{
-                //atualiza os dados da empresa
+                //atualiza os dados da unidade
                 unidade=em.merge(unidade);
             }
             em.getTransaction().commit();
@@ -48,7 +49,7 @@ public class UnidadeDAO {
     }
 
     /**
-     * Método que apaga a empresa do banco de dados.
+     * Método que apaga a unidade do banco de dados.
      * @param id
      */
     public void delete(Long id) {
@@ -58,12 +59,12 @@ public class UnidadeDAO {
             //inicia uma transação no banco de dados
             em.getTransaction().begin();
 
-            //Consulta a empresa no BD através do ID
+            //Consulta a unidade no BD através do ID
             Unidade unidade = em.find(Unidade.class, id);
 
             System.out.println("Excluindo os dados de: " + unidade.getNome());
 
-            //remove a empresa da base de dados
+            //remove a unidade da base de dados
             em.remove(unidade);
 
             //finalizar a transação
@@ -74,9 +75,9 @@ public class UnidadeDAO {
         }
     }
         /**
-         * Consulta empresa pelo ID.
+         * Consulta unidade pelo ID.
          * @param id
-         * @return o objeto Empresa
+         * @return o objeto Unidade
          */
 
         public Unidade findById(Long id){
@@ -85,10 +86,15 @@ public class UnidadeDAO {
             Unidade unidade=null;
 
             try{
-                //consulta uma empresa por ID
+                //consulta uma unidade por ID
                 unidade= em.find(Unidade.class,id);
+                System.out.println("Nome Unidade: "+unidade.getNome()+" Id: "+unidade.getId()+" Endereco: "+unidade.getEndereco());
 
-        }finally {
+        }catch(Exception e){
+                System.err.println(e);
+                System.out.println("Não existe esse Id!");
+            }
+        finally {
                // em.close();
             }
         return unidade;
@@ -105,7 +111,7 @@ public class UnidadeDAO {
         List<Unidade> unidades=null;
 
         try {
-            unidades=em.createQuery("from Unidades e").getResultList();//o e é o alias
+            unidades=em.createQuery("from Unidade u").getResultList();//o u é o alias
 
         }catch (Exception e){
             System.err.println(e);

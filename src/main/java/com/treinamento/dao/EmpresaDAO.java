@@ -3,9 +3,7 @@ package com.treinamento.dao;
 
 import com.treinamento.model.Empresa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
 
 
@@ -29,15 +27,9 @@ public class EmpresaDAO {
             System.out.println("Salvando empresa");
 
             //verifica se a empresa está salva no BD
-            if(empresa.getId()==null){
 
                 em.persist(empresa);//persiste os dados no BD executa o insert
-                System.out.println("Atualizando Empresa:"+empresa.getId() +" - "+empresa.getNome());
-            }else{
-                //atualiza os dados da empresa
-                empresa=em.merge(empresa);
-                System.out.println("Atualizando empresa: "+empresa.getId() +" - "+empresa.getNome());
-            }
+                System.out.println("Incluído Empresa:"+empresa.getId() +" - "+empresa.getNome());
             em.getTransaction().commit();
 
         } catch (Exception e){
@@ -53,6 +45,42 @@ public class EmpresaDAO {
     }
 
     /**
+     * Método que atualiza a empresa do banco de dados.
+     * @param id,empre
+     */
+
+    public Empresa update(Long id, String empre) {
+
+        Empresa empresa =null;
+
+        try{
+            //inicia uma transação no banco de dados
+            em.getTransaction().begin();
+
+
+
+            System.out.println("Atualizando empresa");
+            empresa=em.find(Empresa.class,id);
+
+            System.out.println("Dado atual :"+empresa.getId()+" - "+empresa.getNome());
+            empresa.setNome(empre);
+            System.out.println("Dado Novo: "+empresa.getId()+" - "+empresa.getNome());
+
+            em.getTransaction().commit();
+
+        } catch (Exception e){
+            System.out.println("Erro na atualização!");
+            System.err.println(e);
+
+        }
+        finally{
+            // em.close();
+        }
+        return empresa;
+    }
+
+
+    /**
      * Método que apaga a empresa do banco de dados.
      * @param id
      */
@@ -66,7 +94,7 @@ public class EmpresaDAO {
             //Consulta a empresa no BD através do ID
             Empresa empresa = em.find(Empresa.class, id);
 
-            System.out.println("Excluindo os dados de: " + empresa.getNome());
+            System.out.println("Excluindo: " +empresa.getId() +" - "+empresa.getNome());
 
             //remove a empresa da base de dados
             em.remove(empresa);
@@ -92,12 +120,37 @@ public class EmpresaDAO {
             try{
                 //consulta uma empresa por ID
                 empresa= em.find(Empresa.class,id);
+                System.out.println("Dados empresa:"+empresa.getId()+ "- "+empresa.getNome());
 
         }finally {
           //      em.close();
             }
         return empresa;
     }
+
+    /**
+     * Consulta empresa usando getReference.
+     * @param
+     * @return o id
+     */
+
+    public Empresa findById2(Long id){
+
+        Empresa empresa=null;
+
+        try {
+           empresa=em.getReference(Empresa.class,id);
+            System.out.println("Id:"+ empresa.getId()+" Nome: "+empresa.getNome());
+        }catch (Exception e){
+            System.err.println(e);
+            System.out.println("Id :"+id + " não localizado no nosso BD!");
+        }finally {
+
+        }
+        return empresa;
+    }
+
+
 
     /**
      * Consulta todas as empresas.
@@ -112,8 +165,17 @@ public class EmpresaDAO {
         try {
             empresas=em.createQuery("from Empresa e").getResultList();//o e é o alias
 
+            System.out.println("Buscar todas as empresas: ");
+            for (Empresa empresa:empresas
+                 ) {
+                System.out.println(
+                "Id:"+empresa.getId()+" Nome:"+empresa.getNome()+"");
+
+            }
+
         }catch (Exception e){
             System.err.println(e);
+            System.out.println("Não existem empresas cadastradas");
         }finally {
 
            // em.close();
@@ -122,6 +184,30 @@ public class EmpresaDAO {
         return empresas;
     }
 
+    public List<Empresa> findAll2(){
 
+        List<Empresa> empresas=null;
+
+        try {
+            Query query=em.createQuery("select e from Empresa e");
+            empresas=query.getResultList();
+
+            for (Empresa empresa:empresas
+            ) {
+                System.out.println(
+                        "Id:"+empresa.getId()+" Nome:"+empresa.getNome()+"");
+
+            }
+
+        }catch (Exception e){
+            System.err.println(e);
+            System.out.println("Não existem empresas cadastradas");
+        }finally {
+
+            // em.close();
+
+        }
+        return empresas;
+    }
 
 }

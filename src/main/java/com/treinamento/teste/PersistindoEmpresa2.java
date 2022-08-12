@@ -13,7 +13,8 @@ public class PersistindoEmpresa2 {
         // obtém o entity manager
         EntityManager em = JPAUtil.getEntityManager();
 
-      /*  Empresa empresa = new Empresa("USP") ;
+
+       Empresa empresa = new Empresa("USP") ;
         Empresa empresa1 = new Empresa("Juscelino Kubtheck") ;
 
         Unidade unidade = new Unidade("Objetivo","Rua francisco,01,Serraria");
@@ -41,7 +42,7 @@ public class PersistindoEmpresa2 {
         Professor professor1=new Professor("Fernando","12545",Sexo.MASCULINO);
         Professor professor2=new Professor("Arlete","45698",Sexo.FEMININO);
 
-*/
+
         //perssit empresa
 
         EmpresaDAO empresaDAO= new EmpresaDAO(em);
@@ -52,10 +53,6 @@ public class PersistindoEmpresa2 {
         AlunoDAO alunoDAO= new AlunoDAO(em);
         ProfessorDAO professorDAO=new ProfessorDAO(em);
 
-        professorDAO.delete(2L);
-
-
-/*
 
 
 
@@ -119,6 +116,7 @@ public class PersistindoEmpresa2 {
         disciplinaDAO.save(disciplina2);
         disciplinaDAO.save(disciplina3);
 
+
         periodoCursoDAO.save(periodoCurso);
         periodoCursoDAO.save(periodoCurso1);
         periodoCursoDAO.save(periodoCurso2);
@@ -129,7 +127,8 @@ public class PersistindoEmpresa2 {
         alunoDAO.save(aluno2);
 
         professorDAO.save(professor1);
-        professorDAO.save(professor2);*/
+        professorDAO.save(professor2);
+
 
 
 

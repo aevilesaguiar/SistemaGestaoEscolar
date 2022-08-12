@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "empresa")
+@Table(name = "tab_empresa")
 public class Empresa {
 
     @Id
@@ -16,7 +16,7 @@ public class Empresa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_empresa",length = 120)
+    @Column(name = "nome_empresa",length = 120, nullable = false)
     private String nome;
 
 

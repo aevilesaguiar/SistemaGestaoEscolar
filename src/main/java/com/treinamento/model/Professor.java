@@ -14,10 +14,10 @@ public class Professor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_professor")
+    @Column(name = "nome_professor",length = 200, nullable = false)
     private String nomeCompleto;
 
-    @Column(name = "matricula_professor")
+    @Column(name = "matricula_professor",length = 20,nullable = false)
     private String matricula;
 
     @Column(name = "sexo_professor", nullable = false)

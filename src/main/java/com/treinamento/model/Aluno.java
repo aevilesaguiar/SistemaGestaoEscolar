@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "aluno")
+@Table(name = "tabela_aluno")
 public class Aluno {
 
     @Id
@@ -13,10 +13,10 @@ public class Aluno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "matricula",nullable = false)
+    @Column(name = "matricula",nullable = false, length = 20)
     private String matricula;
 
-    @Column(name = "nome_completo_aluno", nullable = false)
+    @Column(name = "nome_aluno", nullable = false, length = 250)
     private String nomeCompleto;
 
     @Column(name = "sexo_aluno", nullable = false)

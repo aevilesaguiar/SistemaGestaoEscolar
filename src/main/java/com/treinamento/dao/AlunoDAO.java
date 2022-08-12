@@ -51,32 +51,6 @@ public class AlunoDAO {
         return aluno;
     }
 
-    /**
-     * Método que apaga o aluno do banco de dados.
-     * @param id
-     */
-    public void delete(Long id) {
-
-
-        try {
-            //inicia uma transação no banco de dados
-            em.getTransaction().begin();
-
-            //Consulta o aluno no BD através do ID
-            Aluno aluno = em.find(Aluno.class, id);
-
-            System.out.println("Excluindo os dados de: " + aluno.getId()+" - "+aluno.getMatricula());
-
-            //remove as disciplinas da base de dados
-            em.remove(aluno);
-
-            //finalizar a transação
-            em.getTransaction().commit();
-
-        } finally {
-        //    em.close();
-        }
-    }
         /**
          * Consulta curso pelo ID.
          * @param id

@@ -92,7 +92,15 @@ public class CursoDAO {
                 //consulta uma curso por ID
                 curso= em.find(Curso.class,id);
 
-        }finally {
+                System.out.println("Id Curso: "+curso.getId()+ " Nome Curso: "+curso.getNomeCurso());
+
+
+        }catch (Exception e) {
+                System.err.println(e);
+                System.out.println("Não existe esse ID no banco de dados");
+
+            }finally
+             {
           //      em.close();
             }
         return curso;

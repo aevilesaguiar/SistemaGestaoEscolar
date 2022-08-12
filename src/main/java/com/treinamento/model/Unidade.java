@@ -14,10 +14,10 @@ public class Unidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_unidade", length = 180)
+    @Column(name = "nome_unidade", length = 180,nullable = false)
     private String nome;
 
-    @Column(name = "endereco")
+    @Column(name = "endereco",nullable = false, length = 250)
     private String endereco;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "curso")
+@Table(name = "tabela_curso")
 public class Curso {
 
 
@@ -12,7 +12,7 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_curso",nullable = false)
+    @Column(name = "nome_curso",nullable = false, length = 150)
     private String nomeCurso;
 
     @ManyToMany(mappedBy = "cursos")

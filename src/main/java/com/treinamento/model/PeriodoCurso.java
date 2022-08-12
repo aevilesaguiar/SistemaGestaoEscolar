@@ -11,7 +11,7 @@ public class PeriodoCurso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "periodo_curso", nullable = false)
+    @Column(name = "periodo_curso", nullable = false, length = 20)
     private String periodo;
 
     @ManyToOne

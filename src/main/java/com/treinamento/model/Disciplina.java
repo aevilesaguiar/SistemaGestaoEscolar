@@ -4,14 +4,14 @@ package com.treinamento.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "disciplina")
+@Table(name = "tab_disciplina")
 public class Disciplina {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome_disciplina", nullable = false)
+    @Column(name = "nome_disciplina", nullable = false, length = 150)
     private String disciplina;
 
 
