@@ -2,9 +2,12 @@ package com.treinamento.dao;
 
 
 import com.treinamento.model.Empresa;
+import com.treinamento.model.Unidade;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 public class EmpresaDAO {
@@ -189,6 +192,7 @@ public class EmpresaDAO {
         List<Empresa> empresas=null;
 
         try {
+            //não se usa muito o query, e sim o TypedQuery
             Query query=em.createQuery("select e from Empresa e");
             empresas=query.getResultList();
 
@@ -209,5 +213,32 @@ public class EmpresaDAO {
         }
         return empresas;
     }
+
+    public List<Empresa> findAll3(){
+
+        String jpql ="select e from Empresa e";//"e" é o alias
+
+        List<Empresa> empresas=null;
+
+        try {
+            //não se usa muito o query, e sim o TypedQuery
+            TypedQuery<Empresa> typedQuery=em.createQuery(jpql, Empresa.class);
+
+            empresas=typedQuery.getResultList();
+
+            empresas.forEach(e-> System.out.println(e.getId()+" - "+ e.getNome()));
+
+        }catch (Exception e){
+            System.err.println(e);
+            System.out.println("Não existem empresas cadastradas");
+        }finally {
+
+            // em.close();
+
+        }
+        return empresas;
+    }
+
+
 
 }

@@ -66,5 +66,11 @@ public class Empresa {
         this.unidades = unidades;
     }
 
-
+    @Override
+    public String toString() {
+        return "Empresa{" +
+                "nome='" + nome + '\'' +
+                ", unidades=" + unidades +
+                '}';
+    }
 }

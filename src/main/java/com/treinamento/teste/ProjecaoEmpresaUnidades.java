@@ -1,14 +1,13 @@
 package com.treinamento.teste;
 
-
 import com.treinamento.dao.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
-public class FindAll {
-
+public class ProjecaoEmpresaUnidades {
     public static void main(String[] args) {
-        // obtém o entity manager
+
         EntityManager em = JPAUtil.getEntityManager();
 
         EmpresaDAO empresaDAO= new EmpresaDAO(em);
@@ -19,24 +18,7 @@ public class FindAll {
         AlunoDAO alunoDAO= new AlunoDAO(em);
         ProfessorDAO professorDAO=new ProfessorDAO(em);
 
-       empresaDAO.findAll3();
-
-
-
-
-
-        em.close();
-
-
-
-
-
-
-
-
-
-
-
+        
 
 
 

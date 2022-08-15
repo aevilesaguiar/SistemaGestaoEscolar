@@ -434,7 +434,6 @@ detached e removed.
 
 As transições entre os estados são feitas através de métodos do EntityManager.
 
-
 - Objetos transientes (transient) são instanciados usando o operador new. Isso significa que eles ainda não estão associados com um registro na tabela do
   banco de dados e qualquer alteração em seus dados não afeta o estado no banco
   de dados.
@@ -451,9 +450,7 @@ As transições entre os estados são feitas através de métodos do EntityManag
 - Objetos removidos: Uma instância de uma entidade pode ser excluída através do método remove do EntityManager. Um objeto entra no estado removed quando ele é marcado para ser eliminado, masé fisicamente excluído durante a sincronização com o banco de dados.
 - Objetos desanexados: Um objeto sempre inicia no estado transiente e depois pode se tornar gerenciado.Quando o EntityManager é fechado, continua existindo uma instância do objeto, mas já no estado detached. Esse estado existe para quando os objetos estão desconectados, não tendo mais sincronia com o banco de dados.
 
-
 ## Contexto de Peristencia
-
 
 O contexto de persistência é uma coleção de objetos gerenciados por um
 EntityManager.
@@ -474,7 +471,6 @@ pelo contexto de persistência do EntityManager.
 O método detach para de gerenciar a entidade no contexto de persistência,
 colocando ela no estado detached
 
-
 ## Sincronização de dados
 
 Os estados de entidades são sincronizados com o banco de dados quando ocorre
@@ -493,7 +489,6 @@ somos obrigados a trabalhar com objetos desanexados, por exemplo, quando eles
 são expostos para alteração através de páginas web e apenas em um segundo
 momento o usuário solicita a gravação das alterações do objeto.
 
-
 ## Mapeamento
 
 ## Identificadores
@@ -511,7 +506,6 @@ A anotação @Id marca o atributo como um identificador.
 Já a anotação @GeneratedValue sem uma estratégia especificada, permite a
 implementação, que no caso é o Hibernate, escolher a forma como a chave será
 gerada.
-
 
 - @GeneratedValue: Quando essa propriedade não é informada, é considerada a
   estratégia AUTO como padrão.
@@ -547,28 +541,22 @@ Basta criar a propriedade com o tipo da precisão desejada.
 @Column(name = "data_cadastro", nullable = false)
 private LocalDate dataCadastro;
 
-
 Veja abaixo um atributo com o tipo Date equivalente ao exemplo anterior.
-
 
 @Temporal(TemporalType.DATE)
 @Column(name = "data_cadastro", nullable = false)
 private Date dataCadastro;
-
 
 A JPA não define a precisão que deve ser usada se @Temporal não for especificada,
 mas quando usamos Hibernate, as propriedades de datas usam a definição
 TemporalType.TIMESTAMP por padrão. Outras opções são TemporalType.TIME e
 TemporalType.DATE.
 
-
 Para ter uma ideia melhor, LocalDate é equivalente a TemporalType.DATE,
 LocalDateTime equivale a TemporalType.TIMESTAMP e LocalTime é
 TemporalType.TIME.
 
-
 ## Propriedades transientes
-
 
 As propriedades de uma entidade são automaticamente mapeadas se não
 especificarmos nenhuma anotação.
@@ -579,12 +567,9 @@ coluna no banco de dados. Nestes casos, devemos anotar com @Transient.
 @Transient
 private String descricaoCompleta;
 
-
 A propriedade será ignorada totalmente pelo mecanismo de persistência.
 
-
 ## Objetos grandes
-
 
 Quando precisamos armazenar muitos dados em uma coluna, por exemplo um
 texto longo, um arquivo qualquer ou uma imagem, mapeamos a propriedade
@@ -610,7 +595,6 @@ A coluna criada na tabela é do tipo LONGTEXT, que é um tipo de CLOB do MySQL.
 
 ![image.png](assets/image.png?t=1660564717142)
 
-
 ## Associações um-para-um
 
 O relacionamento um-para-um, também conhecido como one-to-one, pode ser
@@ -621,13 +605,11 @@ Esse tipo de associação poderia ser usado entre Veiculo e Proprietario.
 
 ![image.png](assets/image.png?t=1660564811880)
 
-
 Precisamos apenas anotar a classe Proprietario com @Entity e, opcionalmente,
 @Table.
 
 Na classe Empresa, adicionamos a propriedade empreda e mapeamos com
 @OneToOne.
-
 
 public class Empresa {
 // outros atributos
@@ -653,7 +635,6 @@ Podemos mudar isso com a anotação @JoinColumn.
 @JoinColumn(name = "cod_unidade")
 private Unidade unidade;
 
-
 O relacionamento one-to-one aceita referências nulas, por padrão. Podemos
 obrigar a atribuição de proprietário durante a persistência de Veiculo, incluindo
 o atributo optional com valor false na anotação @OneToOne.
@@ -663,7 +644,6 @@ o atributo optional com valor false na anotação @OneToOne.
 private Unidade unidade;
 
 Agora se tentarmos persistir uma unidade semempresa , uma exceção será lançada
-
 
 ## Associação bidirecional
 
@@ -683,14 +663,12 @@ public class Empresa {
 @OneToOne(mappedBy = "empresa")
 private Unidade unidade;
 
-
 // getters e setters
 // equals e hashCode
 }
 
 O valor de mappedBy deve ser igual ao nome da propriedade na classe Unidade que
 associa com Empresa.
-
 
 ## Associações muitos para um - @ManyToMany
 
@@ -699,7 +677,6 @@ um-para-um. Mudaremos o relacionamento agora para many-to-one. Dessa
 
 forma, um veículo poderá possuir apenas um proprietário, mas um proprietário
 poderá estar associado a muitos veículos.
-
 
 ![image.png](assets/image.png?t=1660565529941)
 
@@ -715,19 +692,14 @@ private Empresa empresa;
 A anotação @ManyToOne indica a multiplicidade do relacionamento entre unidade e
 empresa.
 
-
-
 ## Coleções um-para-muitos
-
 
 A anotação @OneToMany deve ser utilizada para mapear coleções.,,
 
 Mapearemos o inverso da associação many-to-one, que fizemos na última seção,
 indicando que um proprietário pode ter muitos veículos.
 
-
 ![image.png](assets/image.png?t=1660565812490)
-
 
 Incluiremos o atributo veiculos na entidade Proprietario, do tipo List<Veiculo>.
 
@@ -737,11 +709,9 @@ public class Proprietario {
 @OneToMany(mappedBy = "proprietario")
 private List<Veiculo> veiculos;
 
-
 // getters e setters
 // equals e hashCode
 }
-
 
 ## Coleções muitos-para-muitos
 
@@ -768,14 +738,11 @@ veiculo_acessorio, o nome da coluna que faz referência para a tabela de veícul
 como veiculo_codigo e da coluna que referencia a tabela de acessórios como
 acessorio_codigo (lado inverso).
 
-
 ## Mapeamento bidirecional
-
 
 Para fazer o mapeamento bidirecional, o lado inverso deve apenas fazer
 referência ao nome da propriedade que mapeou a coleção na entidade dona da
 relação, usando o atributo mappedBy.
-
 
 public class Acessorio {
 // outros atributos
@@ -785,19 +752,15 @@ private Set<Veiculo> veiculos = new HashSet<>();
 // equals e hashCode
 }
 
-
 ## Coleções de tipos básicos e objetos embutidos
-
 
 Em algumas situações, não precisamos criar e relacionar duas entidades, pois
 uma coleção de tipos básicos ou embutíveis seria suficiente. Para esses casos,
 usamos @ElementCollection.
 
-
 Para nosso exemplo, voltaremos a usar a entidade Proprietario. Um proprietário
 pode ter vários números de telefones, que são do tipo String. Tudo que
 precisamos é de um List<String>.
-
 
 @Entity
 @Table(name = "proprietario")
@@ -826,10 +789,8 @@ A tabela que armazena os dados da coleção foi customizada através da anotaç�
 Personalizamos também o nome da coluna que faz referência à tabela de
 proprietário usando a propriedade joinColumns.
 
-
 A anotação @Column foi usada para personalizar o nome da coluna que armazena
 o número do telefone na tabela da coleção.
-
 
 ## Herança
 
@@ -838,14 +799,12 @@ uma tarefa complexa e nem sempre pode ser a melhor solução. Use este recurso
 com moderação. Muitas vezes é melhor você mapear usando associações do que
 herança.
 
-
 A JPA define 3 formas de se fazer o mapeamento de herança:
 • Tabela única para todas as classes (single table)
 • Uma tabela para cada classe da hierarquia (joined)
 • Uma tabela para cada classe concreta (table per class)
 
 Tabela única para todas as classes
-
 
 Essa estratégia de mapeamento de herança é a melhor em termos de performance
 e simplicidade, porém seu maior problema é que as colunas das propriedades
@@ -854,9 +813,7 @@ declaradas nas classes filhas precisam aceitar valores nulos.
 A falta da constraint NOT NULL pode ser um problema sério no ponto de vista de
 integridade de dados.
 
-
 Para implementar essa estratégia, criaremos uma classe abstrata Pessoa.
-
 
 @Entity
 @Table(name = "pessoa")
@@ -869,7 +826,6 @@ public abstract class Pessoa {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Long codigo;
 
-
 @Column(length = 100, nullable = false)
 private String nome;
 // getters e setters
@@ -879,7 +835,6 @@ private String nome;
 Definimos a estratégia SINGLE_TABLE com a anotação @Inheritance. Esse tipo de
 herança é o padrão, ou seja, não precisaríamos anotar a classe com @Inheritance,
 embora seja melhor deixar explícito para facilitar o entendimento.
-
 
 A anotação @DiscriminatorColumn foi usada para informar o nome de coluna de
 controle para discriminar de qual classe é o registro.
@@ -898,7 +853,6 @@ private boolean bloqueado;
 // getters e setters
 }
 
-
 @Entity
 @DiscriminatorValue("C")
 public class Cliente extends Pessoa {
@@ -910,7 +864,6 @@ private BigDecimal rendaMensal;
 private boolean bloqueado;
 // getters e setters
 }
-
 
 @Entity
 @DiscriminatorValue("F")
@@ -930,15 +883,12 @@ Veja a única tabela criada, que armazena os dados de todas as subclasses.
 
 ![image.png](assets/image.png?t=1660566662726)
 
-
 Uma tabela para cada classe da hierarquia
 
 Outra forma de fazer mapeamento de herança é usar uma tabela para cada classe
 da hierarquia (subclasses e superclasse).
 
-
 Alteramos a estratégia de herança para JOINED na entidade Pessoa.
-
 
 @Entity
 @Table(name = "pessoa")
@@ -948,7 +898,6 @@ public abstract class Pessoa {
 // getters e setters
 // equals e hashCode
 }
-
 
 Nas classes Cliente e Funcionario, podemos adicionar a anotação
 @PrimaryKeyJoinColumn para informar o nome da coluna que faz referência à
@@ -974,13 +923,10 @@ public class Cliente extends Pessoa {
 
 Este tipo de mapeamento criará 3 tabelas.
 
-
 ![image.png](assets/image.png?t=1660566684024)
-
 
 A parte de persistência das duas entidades pode ficar da mesma forma que você
 já viu anteriormente. Não muda.O que vai mudar é a estrutura das tabelas no banco de dados.
-
 
 Uma tabela para cada classe concreta
 
@@ -1009,7 +955,6 @@ podemos usar a geração automática de chaves nativa do banco de dados.
 Também não precisamos mais da anotação @PrimaryKeyJoinColumn. Pode removêla
 das entidades Cliente e Funcionario.
 
-
 @Entity
 @Table(name = "cliente")
 public class Cliente extends Pessoa {
@@ -1027,8 +972,6 @@ public class Funcionario extends Pessoa {
 Veja a estrutura das tabelas criadas:
 
 ![image.png](assets/image.png?t=1660566800972)
-
-
 
 Herança de propriedades da superclasse
 
@@ -1056,7 +999,137 @@ uma consulta polimórfica. Veja a mensagem de erro se tentarmos isso:
 Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException:
 Pessoa is not mapped [select p from Pessoa p]
 
+## Operações em cascata
 
+Persistência em cascata
+
+Em diversas situações, quando persistimos uma entidade, queremos também que
+seus relacionamentos sejam persistidos. Podemos chamar o método persist para
+cada entidade relacionada, mas essa é uma tarefa um pouco chata.
+
+EntityManager manager = JpaUtil.getEntityManager();
+EntityTransaction tx = manager.getTransaction();
+tx.begin();
+Categoria categoria = new Categoria();
+categoria.setNome("Roupas");
+manager.persist(categoria);
+Produto produto = new Produto();
+produto.setNome("Camisa Social");
+produto.setCategoria(categoria);
+manager.persist(produto);
+tx.commit();
+manager.close();
+JpaUtil.close();
+
+Felizmente, a JPA fornece um mecanismo para facilitar a persistência de
+entidades e seus relacionamentos transientes, sempre que o método persist
+for chamado. Esse recurso se chama cascade. Para configurá-lo, basta adicionar
+uma propriedade cascade na anotação de relacionamento e definir o valor
+CascadeType.PERSIST.
+
+@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+private Categoria categoria;
+
+Agora, quando persistirmos um produto, a categoria será persistida também
+automaticamente.
+
+As operações do EntityManager são identificadas pela enumeração CascadeType
+com as constantes PERSIST, REFRESH, REMOVE, MERGE e DETACH.
+
+A constante ALL é um atalho para declarar que todas as operações devem ser em
+cascata.
+
+Para o cascading funcionar nessa operação, precisamos configurá-lo no lado
+inverso do relacionamento, ou seja, no atributo produtos da classe Categoria.
+
+@OneToMany(mappedBy = "categoria", cascade = CascadeType.PERSIST)
+private List<Produto> produtos;
+
+Exclusão em cascata
+
+O provedor JPA tentará remover apenas a categoria, mas isso não será possível,
+pois o banco de dados checa violações de integridade.
+
+Vamos configurar a operação de exclusão em cascata no relacionamento produtos
+da entidade Categoria. Para isso, basta adicionar a constante CascadeType.REMOVE
+na propriedade cascade do mapeamento.
+
+@OneToMany(mappedBy = "categoria",
+cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+private List<Produto> produtos;
+
+## Java Persistence Query Language
+
+Introdução à JPQL
+
+Se você quer consultar um objeto e já sabe o identificador dele, pode usar os
+métodos find ou getReference de EntityManager, como já vimos anteriormente.
+
+Agora, caso o identificador seja desconhecido ou você quer consultar uma
+coleção de objetos, você precisará de uma query.
+
+A JPQL (Java Persistence Query Language) é a linguagem de consulta padrão da
+JPA, que permite escrever consultas portáveis, que funcionam independente do
+SGBD.
+
+Esta linguagem de query usa uma sintaxe parecida com a SQL para selecionar
+objetos e valores de entidades e os relacionamentos entre elas.
+
+## Consultas simples e iteração no resultado
+
+O método EntityManager.createQuery é usado para consultar entidades e valores
+usando JPQL.
+
+As consultas criadas através do método createQuery são chamadas de consultas
+dinâmicas, pois elas são definidas diretamente no código da aplicação.
+
+
+Uma das vantagens de utilizar JPQL é que a JPA já converte o resultado da con-
+sulta em objetos. Não é necessário buscar linha por linha e coluna por coluna no
+
+objeto como no JDBC. Caso um atributo a mais seja inserido na entidade, a consulta
+já virá com esse campo populado.
+
+A JPQL na verdade é uma linguagem baseada em objetos. Ao invés de descre-
+vermos como ficará a ligação das tabelas em uma query, escrevemos como os ob-
+jetos se relacionam.
+
+
+## Parâmetros com JPQL
+
+
+A consulta que traz todos os dados pode ser útil em alguns casos, mas, na maioria
+das vezes, precisamos fazer algum tipo de filtro para buscar informações específicas.
+Dessa forma, é preciso passar alguns parâmetros para nossa pesquisa.
+
+Para isso, é possível passar valores para a cláusula where da sua consulta através
+da sintaxe da JPQL para parametrização:
+
+select c from Cachorro c where c.nome = :nome
+select c from Cachorro c where c.idade = :idade
+select c from Cachorro c where c.idoso = false
+
+Chamamos essa abordagem de parametrização de parâmetros nomeados. Para
+passar o valor para a consulta, basta fazer como:
+
+
+
+
+## Outras Anotações
+
+
+@Column(
+name = "TESTE",
+length = 100,
+unique = true,
+nullable = false,
+columnDefinition = "VARCHAR(45)",
+insertable = true,
+updatable = true,
+precision = 2,
+scale = 2,
+table = "outra_tabela")
+private String nome;
 
 
 
