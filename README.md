@@ -419,102 +419,646 @@ id_empresa=?
 
 ## Excluindo objetos
 
-
 A exclusão de objetos é feita chamando o método remove de EntityManager, passando como parâmetro o objeto da entidade.
-
 
 - Estados e ciclo de vida
 
-## Gerenciando Objetos
-
+## Gerenciando Estados
 
 Objetos de entidades são instâncias de classes mapeadas usando JPA, que ficam na memória e representam registros do banco de dados. Essas instâncias possuem um ciclo de vida, que é gerenciado pelo JPA.
 
+Os estados do ciclo de vida das entidades são: transient (ou new), managed,
+detached e removed.
 
-## Observações
+![image.png](assets/image.png)
 
-O lado forte/dominante é o lado que ira ter a chave estrangeira do outro no banco de dados.
+As transições entre os estados são feitas através de métodos do EntityManager.
 
-Em relacionamentos OneToOne, qualquer um dos lados pode ser o dominante.
 
-Em relacionamentos ManyToOne/ OneToMany o lado dominante é sempre o do Many
+- Objetos transientes (transient) são instanciados usando o operador new. Isso significa que eles ainda não estão associados com um registro na tabela do
+  banco de dados e qualquer alteração em seus dados não afeta o estado no banco
+  de dados.
+- Objetos gerenciados (managed) são instâncias de entidades que possuem um
+  identificador e representam um registro da tabela do banco de dados.
+  As instâncias gerenciadas podem ser objetos que foram persistidos através da
+  chamada de um método do EntityManager, como por exemplo o persist.
+  Eles também podem ter se tornado gerenciados através de métodos de consulta
+  do EntityManager, que buscam registros da base de dados e instanciam objetos
+  diretamente no estado managed.
+  Objetos gerenciados estão sempre associados a um contexto de persistência,
+  portanto, quaisquer alterações nesses objetos são sincronizadas com o banco de
+  dados.
+- Objetos removidos: Uma instância de uma entidade pode ser excluída através do método remove do EntityManager. Um objeto entra no estado removed quando ele é marcado para ser eliminado, masé fisicamente excluído durante a sincronização com o banco de dados.
+- Objetos desanexados: Um objeto sempre inicia no estado transiente e depois pode se tornar gerenciado.Quando o EntityManager é fechado, continua existindo uma instância do objeto, mas já no estado detached. Esse estado existe para quando os objetos estão desconectados, não tendo mais sincronia com o banco de dados.
 
-Em relacionamentos ManyToMany, qualquer um dos lados pode ser dominante , porém ira existir uma nova tabela que liga a
-chave primaria de uma classe com a outra, portanto nenhuma das duas classes tera a chave estrangeira da outra.
 
-O mappedBy você deve colocar sempre na classe que NÃO é dona do relacionamento (lado fraco), para indicar que aquele
-atributo é da classe do lado inverso do relacionamento(lado fraco). Ou seja, se Pessoa é a classe dominante, você deve
-colocar o atributo na classe Perfil.
+## Contexto de Peristencia
 
-Por padrão, um mapeamento com @ManyToMany cria a tabela de associação com os nomes das entidades relacionadas,
-separados por underscore, com as colunas com nomes também gerados automaticamente.
 
-ORM: Object Relation Mapper
+O contexto de persistência é uma coleção de objetos gerenciados por um
+EntityManager.
 
-Classe -> ClasseDao -> Entidade(Relacionamento)
+Se uma entidade é pesquisada, mas ela já existe no contexto de persistência,
+o objeto existente é retornado sem acessar o banco de dados. Esse recurso é
+chamado de cache de primeiro nível.
 
-Conceito de Anotations:
-@Table: nome da tabela -> defino o essa anotação para alterar o nome da tabela Ex: tb_dados, senão usar o table será o nome da classe
-@Id: um determinado atributo é a chave primária
-@Column: alterar o nome do atributo, ou seja o nome da coluna.Ex: @Column(name:"nome_aluno") private String name;
-@Entity: a tabela
+Uma mesma entidade pode ser representada por diferentes objetos na memória,
+desde que seja em diferentes instâncias de EntityManagers.
 
-@Transient: é quando eu quero que um atributo não seja persistido pelo o banco de dados
+Em uma única instância de EntityManager, apenas um objeto que representa
+determinada entidade (com o mesmo identificador) pode ser gerenciada.
 
-EntityMangerFactory o seu papel é criar o EntityManger (fabrica de Entity manger)
+O método contains de EntityManager verifica se o objeto está sendo gerenciado
+pelo contexto de persistência do EntityManager.
 
-EntityManger é o gerente das entidades, ele é responsável por inserir, excluir, atualizar...
-EntityManger encapsula a conexão, e podemos criar varias unidades de persistencia.O entityManger ele
-tem encapsulado dentro dele uma conexão com o banco de dados
+O método detach para de gerenciar a entidade no contexto de persistência,
+colocando ela no estado detached
 
-## Lazy loading e eager loading
 
-Lazy loading e eager loading Podemos definir a estratégia de carregamento de relacionamentos de entidades, podendo ser lazy (tardia) ou eager (ansiosa).
+## Sincronização de dados
 
-Todos os relacionamentos qualquer-coisa-para-muitos, ou seja, one-to-many e manyto-many, possuem o lazy loading como estratégia padrão. Os demais relacionamentos
+Os estados de entidades são sincronizados com o banco de dados quando ocorre
+o commit da transação associada.
 
-(que são qualquer-coisa-para-um) possuem a estratégia eager loading como padrão.
+## Salvando Objetos desanexados com merge()
 
-Todos os relacionamentos qualquer-coisa-para-muitos, ou seja, one-to-many e manyto-many, possuem o lazy loading como estratégia padrão. Os demais relacionamentos
+Objetos desanexados são objetos em um estado que não é gerenciado pelo
+EntityManager, mas ainda representam entidades no banco de dados.
 
-(que são qualquer-coisa-para-um) possuem a estratégia eager loading como padrão.
+As alterações em objetos desanexados não são sincronizadas com o banco de
+dados.
 
-## Relacionamentos
+Quando estamos desenvolvendo com JPA, existem diversos momentos que
+somos obrigados a trabalhar com objetos desanexados, por exemplo, quando eles
+são expostos para alteração através de páginas web e apenas em um segundo
+momento o usuário solicita a gravação das alterações do objeto.
+
+
+## Mapeamento
+
+## Identificadores
+
+A propriedade de identificação mapeia a chave primária de uma tabela do banco
+de dados.
+
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
+@Column(name = "cod_empresa")
+private Long codigo;
+
+A anotação @Id marca o atributo como um identificador.
+
+Já a anotação @GeneratedValue sem uma estratégia especificada, permite a
+implementação, que no caso é o Hibernate, escolher a forma como a chave será
+gerada.
+
+
+- @GeneratedValue: Quando essa propriedade não é informada, é considerada a
+  estratégia AUTO como padrão.
+-
+-
+- GenerationType.IDENTITY: Essa estratégia pode ser escolhida quando o banco de dados tem a capacidade de autoincrementar o valor da chave primaria. No caso do MySQL, estamos falando em ter a coluna da chave primaria com auto_increment.
+
+  ## Chaves compostas
+
+  `@Embeddable`anotação sobre uma classe define que, ela não tem existência independente. Assim, não podemos executar consultas de banco de dados, sem depender de outra classe.
+
+  **A JPA fornece a anotação *@Embeddable*  para declarar que uma classe será incorporada por outras entidades.**
+- **A anotação JPA *@Embedded* é usada para incorporar um tipo em outra entidade.**
+
+  Ex: ![image.png](assets/image.png?t=1660564328461)
+
+  ## Enumerações
+
+  Enumerações em Java é um tipo que define um número finito de valores
+  (instâncias), como se fossem constantes.
+
+O novo atributo foi mapeado como uma coluna normal, porém incluímos a anotação @Enumerated, para configurar o tipo da enumeração como string.
+Fizemos isso para que a coluna do banco de dados armazene o nome da
+constante, e não o número que representa a opção na enumeração.
+
+## Propriedades temporais
+
+Para utilizar a “nova” API de datas do Java com LocalDate, LocalDateTime e
+LocalTime, não é preciso nada de especial.
+
+Basta criar a propriedade com o tipo da precisão desejada.
+
+@Column(name = "data_cadastro", nullable = false)
+private LocalDate dataCadastro;
+
+
+Veja abaixo um atributo com o tipo Date equivalente ao exemplo anterior.
+
+
+@Temporal(TemporalType.DATE)
+@Column(name = "data_cadastro", nullable = false)
+private Date dataCadastro;
+
+
+A JPA não define a precisão que deve ser usada se @Temporal não for especificada,
+mas quando usamos Hibernate, as propriedades de datas usam a definição
+TemporalType.TIMESTAMP por padrão. Outras opções são TemporalType.TIME e
+TemporalType.DATE.
+
+
+Para ter uma ideia melhor, LocalDate é equivalente a TemporalType.DATE,
+LocalDateTime equivale a TemporalType.TIMESTAMP e LocalTime é
+TemporalType.TIME.
+
+
+## Propriedades transientes
+
+
+As propriedades de uma entidade são automaticamente mapeadas se não
+especificarmos nenhuma anotação.
+
+Por diversas vezes, podemos precisar criar atributos que não representam uma
+coluna no banco de dados. Nestes casos, devemos anotar com @Transient.
+
+@Transient
+private String descricaoCompleta;
+
+
+A propriedade será ignorada totalmente pelo mecanismo de persistência.
+
+
+## Objetos grandes
+
+
+Quando precisamos armazenar muitos dados em uma coluna, por exemplo um
+texto longo, um arquivo qualquer ou uma imagem, mapeamos a propriedade
+com a anotação @Lob.
+
+Objeto grande em caracteres (CLOB)
+
+Um CLOB (Character Large Object) é um tipo de dado em bancos de dados que
+pode armazenar objetos grandes em caracteres (textos muito longos).
+
+Para mapear uma coluna CLOB em JPA, definimos uma propriedade com o tipo
+String, char[] ou Character[] e anotamos com @Lob.
+
+public class Veiculo {
+// outros atributos
+@Lob
+private String especificacoes;
+// getters e setters
+// equals e hashCode
+}
+
+A coluna criada na tabela é do tipo LONGTEXT, que é um tipo de CLOB do MySQL.
+
+![image.png](assets/image.png?t=1660564717142)
+
+
+## Associações um-para-um
+
+O relacionamento um-para-um, também conhecido como one-to-one, pode ser
+usado para dividir uma entidade em duas (criando duas tabelas), para ficar mais
+normalizado e organizado.
+
+Esse tipo de associação poderia ser usado entre Veiculo e Proprietario.
+
+![image.png](assets/image.png?t=1660564811880)
+
+
+Precisamos apenas anotar a classe Proprietario com @Entity e, opcionalmente,
+@Table.
+
+Na classe Empresa, adicionamos a propriedade empreda e mapeamos com
+@OneToOne.
+
+
+public class Empresa {
+// outros atributos
 
 @OneToOne
-@OneToMany  - @ManyToOne  (bidirecional)
-List
+private Unidade unidade;
 
-@ManyToMany - bidirecional
+// getters e setters
+// equals e hashCode
+}
 
-@JoinColumn(name = "assento_id", unique = true) : é usado para mapear campos que representam uma junção de tabela
+Note que foi criada uma coluna unidade_id na tabela tab_veiculo.
 
-## tipos de cascade
+Por padrão, o nome da coluna é definido com o nome do atributo da associação,
+mais underscore, mais o nome do atributo do identificador da entidade destino.
+Podemos mudar isso com a anotação @JoinColumn.
 
-O atributo cascade pode receber um array de dados, o cascade faz uma operação cascata;
+Por padrão, o nome da coluna é definido com o nome do atributo da associação,
+mais underscore, mais o nome do atributo do identificador da entidade destino.
+Podemos mudar isso com a anotação @JoinColumn.
 
-PERSIST: Ele propaga a operação de persistir um objeto Pai para um objeto Filho, assim quando salvar a Entidade Cliente, também será salvo todas as Entidades Telefone associadas.
+@OneToOne
+@JoinColumn(name = "cod_unidade")
+private Unidade unidade;
 
-MERGE: Ele propaga a operação de atualização de um objeto Pai para um objeto Filho, assim quando atualizadas as informações da Entidade Cliente, também será atualizado
 
-no banco de dados todas as informações das Entidades Telefone associadas.
+O relacionamento one-to-one aceita referências nulas, por padrão. Podemos
+obrigar a atribuição de proprietário durante a persistência de Veiculo, incluindo
+o atributo optional com valor false na anotação @OneToOne.
 
-REMOVE: Ele propaga a operação de remoção de um objeto Pai para um objeto Filho, assim quando remover a Entidade Cliente, também será removida todas as entidades Telefone associadas.
+@OneToOne(optional = false)
+@JoinColumn(name = "cod_unidade")
+private Unidade unidade;
 
-REFRESH: Ele propaga a operação de recarregar de um objeto Pai para um objeto Filho, assim, quando houver atualização no banco de dados na Entidade Cliente, todas as entidades Telefone associadas serão recarregadas do banco de dados.
+Agora se tentarmos persistir uma unidade semempresa , uma exceção será lançada
 
-ALL: Corresponde a todas as operações acima (MERGE, PERSIST, REFRESH e REMOVE).
 
-DETACH: "A operação de desanexação remove a entidade do contexto persistente. Quando usamos CascaseType.DETACH, a entidade filha também é removida do contexto persistente".
+## Associação bidirecional
 
-## Operação Bidirecional
+A associação que fizemos entre Veiculo e Proprietario é unidirecional, ou seja,
+podemos obter o proprietário a partir de um veículo, mas não conseguimos obter o veículo a partir de um proprietário.
 
-@OneToOne(mappedBy = "assento")//dentro da classe cliente o atributo que mapeia a operação é assento, ou seja ele não cria uma tabela nova e sim uma coluna
-private Cliente cliente;
+Para tornar a associação um-para-um bidirecional e então conseguirmos obter
+a Empresa a partir de uma unidade, precisamos apenas incluir uma nova
+propriedade na classe PEmpresa e mapear com @OneToOne usando o atributo
+mappedBy.
 
-@OneToOne(cascade = CascadeType.PERSIST) //ele faz a operação apenas quando estivermos persistindo
-@JoinColumn(name = "assento_id", unique = true)
-private Assento assento;
+@Entity
+@Table(name = "empresa")
+public class Empresa {
+// outros atributos
+
+@OneToOne(mappedBy = "empresa")
+private Unidade unidade;
+
+
+// getters e setters
+// equals e hashCode
+}
+
+O valor de mappedBy deve ser igual ao nome da propriedade na classe Unidade que
+associa com Empresa.
+
+
+## Associações muitos para um - @ManyToMany
+
+Na última seção, mapeamos o atributo empresa na entidade Veiculo com
+um-para-um. Mudaremos o relacionamento agora para many-to-one. Dessa
+
+forma, um veículo poderá possuir apenas um proprietário, mas um proprietário
+poderá estar associado a muitos veículos.
+
+
+![image.png](assets/image.png?t=1660565529941)
+
+public class Unidade {
+// outros atributos
+@ManyToOne
+@JoinColumn(name = "empresa_id")
+private Empresa empresa;
+// getters e setters
+// equals e hashCode
+}
+
+A anotação @ManyToOne indica a multiplicidade do relacionamento entre unidade e
+empresa.
+
+
+
+## Coleções um-para-muitos
+
+
+A anotação @OneToMany deve ser utilizada para mapear coleções.,,
+
+Mapearemos o inverso da associação many-to-one, que fizemos na última seção,
+indicando que um proprietário pode ter muitos veículos.
+
+
+![image.png](assets/image.png?t=1660565812490)
+
+
+Incluiremos o atributo veiculos na entidade Proprietario, do tipo List<Veiculo>.
+
+public class Proprietario {
+// outros atributos
+
+@OneToMany(mappedBy = "proprietario")
+private List<Veiculo> veiculos;
+
+
+// getters e setters
+// equals e hashCode
+}
+
+
+## Coleções muitos-para-muitos
+
+![image.png](assets/image.png?t=1660565920055)
+
+Esse tipo de relacionamento precisará de uma tabela de associação para que a
+multiplicidade muitos-para-muitos funcione. O recurso de schema generation do
+JPA poderá recriar as tabelas automaticamente.
+
+Por padrão, um mapeamento com @ManyToMany cria a tabela de associação com os
+nomes das entidades relacionadas, separados por underscore, com as colunas com
+nomes também gerados automaticamente.
+Podemos customizar o nome da tabela de associação e das colunas com a
+anotação @JoinTable.
+
+@ManyToMany
+@JoinTable(name = "veiculo_acessorio",
+joinColumns = @JoinColumn(name = "veiculo_codigo"),
+inverseJoinColumns = @JoinColumn(name = "acessorio_codigo"))
+private Set<Acessorio> acessorios = new HashSet<>();
+
+Neste exemplo, definimos o nome da tabela de associação como
+veiculo_acessorio, o nome da coluna que faz referência para a tabela de veículos
+como veiculo_codigo e da coluna que referencia a tabela de acessórios como
+acessorio_codigo (lado inverso).
+
+
+## Mapeamento bidirecional
+
+
+Para fazer o mapeamento bidirecional, o lado inverso deve apenas fazer
+referência ao nome da propriedade que mapeou a coleção na entidade dona da
+relação, usando o atributo mappedBy.
+
+
+public class Acessorio {
+// outros atributos
+@ManyToMany(mappedBy = "acessorios")
+private Set<Veiculo> veiculos = new HashSet<>();
+// getters e setters
+// equals e hashCode
+}
+
+
+## Coleções de tipos básicos e objetos embutidos
+
+
+Em algumas situações, não precisamos criar e relacionar duas entidades, pois
+uma coleção de tipos básicos ou embutíveis seria suficiente. Para esses casos,
+usamos @ElementCollection.
+
+
+Para nosso exemplo, voltaremos a usar a entidade Proprietario. Um proprietário
+pode ter vários números de telefones, que são do tipo String. Tudo que
+precisamos é de um List<String>.
+
+
+@Entity
+@Table(name = "proprietario")
+public class Proprietario {
+@Id
+
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long codigo;
+@Column(name = "nome", length = 60, nullable = false)
+private String nome;
+@Column(length = 255)
+private String email;
+@ElementCollection
+@CollectionTable(name = "proprietario_telefone",
+joinColumns = @JoinColumn(name = "proprietario_codigo"))
+@Column(name = "telefone_numero", length = 20, nullable = false)
+private List<String> telefones = new ArrayList<>();
+// getters e setters
+// hashCode e equals
+
+}
+
+A tabela que armazena os dados da coleção foi customizada através da anotação
+@CollectionTable.
+
+Personalizamos também o nome da coluna que faz referência à tabela de
+proprietário usando a propriedade joinColumns.
+
+
+A anotação @Column foi usada para personalizar o nome da coluna que armazena
+o número do telefone na tabela da coleção.
+
+
+## Herança
+
+Mapear herança de classes que representam tabelas no banco de dados pode ser
+uma tarefa complexa e nem sempre pode ser a melhor solução. Use este recurso
+com moderação. Muitas vezes é melhor você mapear usando associações do que
+herança.
+
+
+A JPA define 3 formas de se fazer o mapeamento de herança:
+• Tabela única para todas as classes (single table)
+• Uma tabela para cada classe da hierarquia (joined)
+• Uma tabela para cada classe concreta (table per class)
+
+Tabela única para todas as classes
+
+
+Essa estratégia de mapeamento de herança é a melhor em termos de performance
+e simplicidade, porém seu maior problema é que as colunas das propriedades
+declaradas nas classes filhas precisam aceitar valores nulos.
+
+A falta da constraint NOT NULL pode ser um problema sério no ponto de vista de
+integridade de dados.
+
+
+Para implementar essa estratégia, criaremos uma classe abstrata Pessoa.
+
+
+@Entity
+@Table(name = "pessoa")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo")
+
+public abstract class Pessoa {
+
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long codigo;
+
+
+@Column(length = 100, nullable = false)
+private String nome;
+// getters e setters
+// hashCode e equals
+}
+
+Definimos a estratégia SINGLE_TABLE com a anotação @Inheritance. Esse tipo de
+herança é o padrão, ou seja, não precisaríamos anotar a classe com @Inheritance,
+embora seja melhor deixar explícito para facilitar o entendimento.
+
+
+A anotação @DiscriminatorColumn foi usada para informar o nome de coluna de
+controle para discriminar de qual classe é o registro.
+
+Agora, criaremos as subclasses Cliente e Funcionario.
+
+@Entity
+@DiscriminatorValue("C")
+public class Cliente extends Pessoa {
+@Column(name = "limite_credito", nullable = true)
+private BigDecimal limiteCredito;
+@Column(name = "renda_mensal", nullable = true)
+private BigDecimal rendaMensal;
+@Column(nullable = true)
+private boolean bloqueado;
+// getters e setters
+}
+
+
+@Entity
+@DiscriminatorValue("C")
+public class Cliente extends Pessoa {
+@Column(name = "limite_credito", nullable = true)
+private BigDecimal limiteCredito;
+@Column(name = "renda_mensal", nullable = true)
+private BigDecimal rendaMensal;
+@Column(nullable = true)
+private boolean bloqueado;
+// getters e setters
+}
+
+
+@Entity
+@DiscriminatorValue("F")
+public class Funcionario extends Pessoa {
+
+@Column(nullable = true)
+private BigDecimal salario;
+@Column(length = 60, nullable = true)
+private String cargo;
+// getters e setters
+}
+
+As subclasses foram anotadas com @DiscriminatorValue para definir o valor
+discriminador de cada tipo.
+
+Veja a única tabela criada, que armazena os dados de todas as subclasses.
+
+![image.png](assets/image.png?t=1660566662726)
+
+
+Uma tabela para cada classe da hierarquia
+
+Outra forma de fazer mapeamento de herança é usar uma tabela para cada classe
+da hierarquia (subclasses e superclasse).
+
+
+Alteramos a estratégia de herança para JOINED na entidade Pessoa.
+
+
+@Entity
+@Table(name = "pessoa")
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Pessoa {
+// atributos
+// getters e setters
+// equals e hashCode
+}
+
+
+Nas classes Cliente e Funcionario, podemos adicionar a anotação
+@PrimaryKeyJoinColumn para informar o nome da coluna que faz referência à
+tabela pai, ou seja, o identificador de Pessoa. Se o nome dessa coluna for igual ao
+nome da coluna da tabela pai, essa anotação não precisa ser utilizada.
+
+@Entity
+
+@Table(name = "funcionario")
+@PrimaryKeyJoinColumn(name = "pessoa_codigo")
+public class Funcionario extends Pessoa {
+// atributos
+// getters e setters
+}
+
+@Entity
+@Table(name = "cliente")
+@PrimaryKeyJoinColumn(name = "pessoa_codigo")
+public class Cliente extends Pessoa {
+// atributos
+// getters e setters
+}
+
+Este tipo de mapeamento criará 3 tabelas.
+
+
+![image.png](assets/image.png?t=1660566684024)
+
+
+A parte de persistência das duas entidades pode ficar da mesma forma que você
+já viu anteriormente. Não muda.O que vai mudar é a estrutura das tabelas no banco de dados.
+
+
+Uma tabela para cada classe concreta
+
+Uma outra opção de mapeamento de herança é ter tabelas apenas para classes
+concretas (subclasses). Cada tabela deve possuir todas as colunas, incluindo as da
+superclasse
+
+Para utilizar essa forma de mapeamento, devemos anotar a classe Pessoa da
+maneira apresentada abaixo:
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Pessoa {
+@Id
+@GeneratedValue(generator = "inc")
+@GenericGenerator(name = "inc", strategy = "increment")
+private Long codigo;
+// outros atributos
+// getters e setters
+// equals e hashCode
+}
+
+Tivemos que mudar a estratégia de geração de identificadores “increment”, que
+a implementação do Hibernate disponibiliza (não é padronizada pelo JPA). Não
+podemos usar a geração automática de chaves nativa do banco de dados.
+Também não precisamos mais da anotação @PrimaryKeyJoinColumn. Pode removêla
+das entidades Cliente e Funcionario.
+
+
+@Entity
+@Table(name = "cliente")
+public class Cliente extends Pessoa {
+// atributos
+// getters e setters
+
+}
+@Entity
+@Table(name = "funcionario")
+public class Funcionario extends Pessoa {
+// atributos
+// getters e setters
+}
+
+Veja a estrutura das tabelas criadas:
+
+![image.png](assets/image.png?t=1660566800972)
+
+
+
+Herança de propriedades da superclasse
+
+Pode ser útil em algumas situações compartilhar propriedades através de uma
+superclasse, sem considerá-la como uma entidade mapeada. Para isso, podemos
+usar a anotação @MappedSuperclass.
+
+@MappedSuperclass
+public abstract class Pessoa {
+
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long codigo;
+// outros atributos
+// getters e setters
+// equals e hashCode
+}
+
+As subclasses são mapeadas normalmente, sem nada especial. Continuam
+somente com @Entity e @Table.
+
+Apenas as tabelas cliente e funcionario serão criadas. Como esse tipo de
+mapeamento não é uma estratégia de herança da JPA, não conseguimos fazer
+uma consulta polimórfica. Veja a mensagem de erro se tentarmos isso:
+Caused by: org.hibernate.hql.internal.ast.QuerySyntaxException:
+Pessoa is not mapped [select p from Pessoa p]
+
+
+
+
 
 ## Referencias
 
